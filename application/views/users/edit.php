@@ -5,13 +5,13 @@
         </div>
 
         <div class="content">
-            <?php echo form_open('admins/edit/', null, array('id' => $admin['id'])); // ?>
+            <?php echo form_open('users/edit/', null, array('id' => $user['id'])); // ?>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="AdminUsername" class="control-label">Username :</label>
                         <input type="text" class="form-control border-input" name="username" id="AdminUsername"
-                               placeholder="salim" value="<?= $admin['username']; ?>">
+                               placeholder="salim" value="<?= $user['username']; ?>">
                         <?php echo form_error('username', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="AdminFullName" class="control-label">Full Name :</label>
                         <input type="text" class="form-control border-input" name="name" id="AdminFullName"
-                               placeholder="Mohamad Salim" value="<?= $admin['name']; ?>">
+                               placeholder="Mohamad Salim" value="<?= $user['name']; ?>">
                         <?php echo form_error('name', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="AdminEmail" class="control-label">Email :</label>
                         <input type="email" class="form-control border-input" name="email" id="AdminEmail"
-                               placeholder="salim@example.com" value="<?= $admin['email']; ?>">
+                               placeholder="salim@example.com" value="<?= $user['email']; ?>">
                         <?php echo form_error('email', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         <label for="AdminRole" class="control-label">Peranan :</label>
                         <?php
                         $attr = array('class' => 'form-control border-input', 'id' => 'AdminRole');
-                        echo form_dropdown('role', $role, $admin['role'], $attr);
+                        echo form_dropdown('role', $role, $user['role'], $attr);
                         ?>
                         <?php echo form_error('role', '<div class="error">', '</div>'); ?>
                     </div>
@@ -54,7 +54,7 @@
                         <label for="AdminActive" class="control-label">Status:</label>
                         <?php
                         $attr = array('class' => 'form-control border-input', 'id' => 'AdminActive');
-                        echo form_dropdown('is_active', $active, $admin['is_active'], $attr);
+                        echo form_dropdown('is_active', $active, $user['is_active'], $attr);
                         ?>
                         <?php echo form_error('is_active', '<div class="error">', '</div>'); ?>
                     </div>

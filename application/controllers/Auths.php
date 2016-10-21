@@ -40,7 +40,7 @@ class Auths extends CI_Controller
                 redirect('welcome'); // back to the login
             } else {
                 $this->session->set_flashdata('item', array('message' => 'Wrong Authname/Password. Please try again.', 'class' => 'danger')); //danger or success
-                redirect('users/login'); // back to the login
+                redirect('auths/login'); // back to the login
             }
         }
     }

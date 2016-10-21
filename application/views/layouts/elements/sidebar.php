@@ -70,8 +70,8 @@ $action = $this->uri->segment(2);
                 </a>
                 <div class="collapse <?= ($class == 'active' ? 'in' : '') ?>" id="admins">
                     <ul class="nav">
-                        <li><a href="<?= base_url("admins/"); ?>">Senarai Pengguna</a></li>
-                        <li><a href="<?= base_url("admins/add"); ?>">Daftar Pengguna</a></li>
+                        <li><a href="<?= base_url("users/"); ?>">Senarai Pengguna</a></li>
+                        <li><a href="<?= base_url("users/add"); ?>">Daftar Pengguna</a></li>
                     </ul>
                 </div>
             </li>

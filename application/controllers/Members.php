@@ -33,8 +33,13 @@ class Members extends CI_Controller
     public function index($offset = 0)
     {
         $limit = 10;
-        $is_active = 1;
-        $result = $this->MemberModel->all($is_active, $limit, $offset);
+        
+        if($this->input->method()){
+            $result = $this->MemberModel->all($limit, $offset);
+        }else{
+            $result = $this->MemberModel->all_search($this->input->post('query'), $limit, $offset);
+        }
+
         $data['members'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 

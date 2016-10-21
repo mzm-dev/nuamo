@@ -4,7 +4,7 @@
             <h4 class="title">Daftar Pengguna</h4>
         </div>
         <div class="content">
-            <?php echo form_open('admins/add', array('novalidate' => true)); // ?>
+            <?php echo form_open('users/add', array('novalidate' => true)); // ?>
 
             <div class="row">
                 <div class="col-md-4">

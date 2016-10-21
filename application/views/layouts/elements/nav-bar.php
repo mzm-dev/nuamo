@@ -40,7 +40,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= base_url("users/logout"); ?>">
+                    <a href="<?= base_url("auths/logout"); ?>">
                         <i class="ti-power-off"></i>
                         <p>Logout</p>
                     </a>

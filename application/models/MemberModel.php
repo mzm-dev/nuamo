@@ -14,12 +14,32 @@ class MemberModel extends CI_Model
      * @return void
      * @desc This function use for checking whether data exists or not
      */
-    public function all($is_active, $limit, $offset)
+    public function all($limit, $offset)
     {
+        $is_active = 1;
         if ($offset > 0) {
             $offset = ($offset - 1) * $limit;
         }
         $codes = array('1004');
+        $this->db->where_in('status', $codes);
+        $this->db->where_in('is_active', $is_active);
+        $result['rows'] = $this->db->get($this->Table, $limit, $offset);
+
+        $this->db->where_in('status', $codes);
+        $this->db->where_in('is_active', $is_active);
+        $result['num_rows'] = $this->db->count_all_results($this->Table);
+        return $result;
+    }
+
+    public function all_search($query, $limit, $offset)
+    {
+        $is_active = 1;
+        if ($offset > 0) {
+            $offset = ($offset - 1) * $limit;
+        }
+        $codes = array('1004');
+        $array = array('name' => $query, 'nric' => $query);
+        $this->db->or_like($array);
         $this->db->where_in('status', $codes);
         $this->db->where_in('is_active', $is_active);
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);

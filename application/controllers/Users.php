@@ -161,4 +161,21 @@ class Users extends CI_Controller
         }
 
     }
+
+    public function reset($id = null)
+    {
+        if (!empty($id) && !$this->UserModel->exists($id)) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('users/index'); // back to the index
+        }
+        $data = array(
+            'id' => $this->input->post('id'),
+            'password' => $this->AuthModel->pwd_hash($this->defaultPassword),
+        );
+        $this->UserModel->modified($data); //load model
+
+        //set flash message
+        $this->session->set_flashdata('item', array('message' => 'Reset password has been renew', 'class' => 'success')); //danger or success
+        redirect('users/index'); // back to the index
+    }
 }
