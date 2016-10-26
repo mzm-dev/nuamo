@@ -5,6 +5,11 @@
 CodeIgniter is an Application Development Framework
 
 ###################
+## Database Demo
+###################
+[Demo Data](http://pastebin.com/vxi55jYh)
+
+###################
 ## Ref LOGIN & CRUD
 ###################
 
