@@ -16,9 +16,10 @@ class UserModel extends CI_Model
      * @return bool
      * @desc This function use for checking whether data exists or not
      */
-    public function exists($id)
+    public function exists($val, $key = null)
     {
-        $this->db->where('id', $id);
+        $param = ($key ? $key : 'id');
+        $this->db->where($param, $val);
         $Q = $this->db->get($this->Table);
         if ($Q->num_rows() > 0) {
             return TRUE;
@@ -42,12 +43,14 @@ class UserModel extends CI_Model
         return $result;
     }
 
-    public function listing() {
+    public function listing()
+    {
         $Q = $this->db->get($this->Table);
         if ($Q->num_rows() > 0) {
             return $Q->result_array();
         }
     }
+
     /**
      * insert new data
      * @user $data

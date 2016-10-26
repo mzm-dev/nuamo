@@ -290,6 +290,23 @@ class Members extends CI_Controller
     }
 
     /**
+     * @param null $id
+     */
+    public function view($id = null)
+    {
+        if (!empty($id) && !$this->MemberModel->exists($id)) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('members/index'); // back to the index
+        }
+
+        $data['status'] = array('' => '--Tiada Maklumat--', '0' => 'Tidak Aktif', '1' => 'Aktif');
+        $data['status_name'] = $this->ParamModel->read_pre('100');
+        $data['member'] = $this->MemberModel->read($id);
+        $data['main'] = '/members/view';
+        $this->load->view('layouts/default', $data);
+    }
+
+    /**
      * delete method
      * @member string user_id
      */

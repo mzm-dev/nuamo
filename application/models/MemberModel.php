@@ -31,6 +31,15 @@ class MemberModel extends CI_Model
         return $result;
     }
 
+    public function count_all($is_active = 1, $codes = array('1004'))
+    {
+        $this->db->where_in('status', $codes);
+        $this->db->where('is_active', $is_active);
+        $this->db->from($this->Table);
+        return $this->db->count_all_results(); // Produces an integer, like 17
+
+    }
+
     public function all_search($query, $limit, $offset)
     {
         $is_active = 1;

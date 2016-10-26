@@ -1,12 +1,18 @@
 <?php
 
-class AuthModel extends CI_Model {
+class AuthModel extends CI_Model
+{
     protected $Table;
     protected $username;
-    public function __construct() {
+    protected $sessionLogin;
+
+    public function __construct()
+    {
+
         $this->Table = 'users';
         $this->load->database();
         $this->username = 'email';
+        $this->sessionLogin = $this->config->item('session_login');
     }
 
     /**
@@ -14,8 +20,10 @@ class AuthModel extends CI_Model {
      * @return void
      * @desc This function use for checking whether data exists or not
      */
-    public function exists($username) {
-        $this->db->where($this->username, $username);
+    public function exists($val, $key = null)
+    {
+        $param = ($key ? $key : $this->username); //If key empty, use default param in construct
+        $this->db->where($param, $val);
         $Q = $this->db->get($this->Table);
         if ($Q->num_rows() > 0) {
             return $Q->row_array();
@@ -24,10 +32,11 @@ class AuthModel extends CI_Model {
 
     /**
      * check_password
-     * @return void    
+     * @return void
      * @desc get userdata before check password hash match
      */
-    public function check_password($data) {
+    public function check_password($data)
+    {
         $result = $this->exists($data[$this->username]);
 
         if ($this->pwd_verify($data['password'], $result['password'])) {
@@ -37,11 +46,13 @@ class AuthModel extends CI_Model {
 
     /**
      * check_Current_password
-     * @return void    
+     * @return void
      * @desc get userdata before check password hash match
      */
-    public function check_current_password($data) {
-        $result = $this->exists($data[$this->username]);
+    public function check_current_password($data)
+    {
+        $result = $this->exists($data['id'],'id');
+        var_dump($result);
 
         if ($this->pwd_verify($data['current_password'], $result['password'])) {
             return TRUE;
@@ -50,16 +61,22 @@ class AuthModel extends CI_Model {
 
     /**
      * check_password
-     * @return void    
+     * @return void
      * @desc get userdata before check password hash match
      */
-    public function login($data) {
+    public function login($data)
+    {
+
+        $this->remove_token(true); //RUN to clear token expired
+
         if ($this->check_password($data)) {
             $this->session->set_userdata('user_session', $this->exists($data[$this->username]));
+            $this->session->mark_as_temp('user_session', $this->sessionLogin);
             return TRUE;
         } else {
             return FALSE;
         }
+
     }
 
     /**
@@ -67,8 +84,9 @@ class AuthModel extends CI_Model {
      * @return void
      * @API password_hash()
      */
-    public function pwd_hash($password) {
-        $hash = $this->generate_salt(23);
+    public function pwd_hash($password)
+    {
+        $hash = $this->generate_password(23);
         $options = [
             'salt' => $hash, //write your own code to generate a suitable salt
             'cost' => 11 // the default cost is 10
@@ -82,7 +100,8 @@ class AuthModel extends CI_Model {
      * @return void
      * @API password_verify()
      */
-    public function pwd_verify($password, $hash) {
+    public function pwd_verify($password, $hash)
+    {
 
         if (password_verify($password, $hash)) {
             return TRUE;
@@ -95,8 +114,9 @@ class AuthModel extends CI_Model {
      * generate_salt
      * @return void
      */
-    private function generate_salt($length = 22) {
-        $chars = "@#$&abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    public function generate_salt($length = 22)
+    {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $str = '';
         $size = strlen($chars);
         for ($i = 0; $i < $length; $i++) {
@@ -105,4 +125,34 @@ class AuthModel extends CI_Model {
         return $str;
     }
 
+    /**
+     * generate password
+     * @return void
+     */
+    public function generate_password($length = 6)
+    {
+        $this->remove_token(true); //RUN to clear token expired
+        
+        $chars = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%&";
+        $str = '';
+        $size = strlen($chars);
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[rand(0, $size - 1)];
+        }
+        return $str;
+    }
+
+    /**
+     * remove all token
+     * @param $true
+     */
+    public function remove_token($true)
+    {
+        if($true){
+            $this->db->set('token_exp', null);
+            $this->db->set('token_key', null);
+            $this->db->where('token_exp <', date('Y-m-d H:i:s'));
+            $this->db->update($this->Table);
+        }
+    }
 }

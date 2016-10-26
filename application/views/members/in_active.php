@@ -28,8 +28,8 @@
                             <td class="col-md-1"><?= $i ?></td>
                             <td class="col-md-1"><?= $member['nric'] ?></td>
                             <td><?= $member['name'] ?></td>
-                            <td class="col-md-2">
-                                <?= $status_name[$member['status']]; ?>
+                            <td class="col-md-1 text-center">
+                                <?= '<i class="fa ' . ($member['is_active'] ? 'fa-check-circle' : 'fa-times-circle-o') . ' fa-lg text-success"></i>';?>
                             </td>
                             <td class="col-md-2">
                                 <a href="<?= base_url("members/view/" . $member['id']); ?>"

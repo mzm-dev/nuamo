@@ -6,6 +6,7 @@ class Welcome extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('MemberModel');
         $this->isRegistered();
     }
 
@@ -20,23 +21,17 @@ class Welcome extends CI_Controller
         }
     }
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     *        http://example.com/index.php/welcome
-     *    - or -
-     *        http://example.com/index.php/welcome/index
-     *    - or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see https://codeigniter.com/user_guide/general/urls.html
-     */
     public function index()
     {
+
+        //Count Member
+        $data['countMember'] = $this->MemberModel->count_all();
+        //Count Ex Member
+        $data['countEx'] = $this->MemberModel->count_all(0);
+        //Count New Applied
+        $pending = array('1001', '1002', '1005');
+        $data['countNew'] = $this->MemberModel->count_all(0, $pending);
+
         $data['main'] = 'welcome_message';
         $this->load->view('layouts/default', $data);
     }

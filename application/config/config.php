@@ -522,17 +522,26 @@ $config['proxy_ips'] = '';
 | default password as defined.
 | default password cannot empty
 */
-$config['default_password'] = 'sp5OXx46Iw';
+$config['default_password'] = 'pass1234';
 /*
 | Bad password when registration
 | Every guest not allow to used bad password
 */
 $config['bad_password'] = array(
-    'password',
+    //'password',
     '12343456789',
     'abcd', 'wxyz', 'qwerty',
     'zaq1', '2wsx', 'cde3'
 );
+/*
+| Session Login Time Out
+| Value in second
+| 1 minute =  60 second
+| 5 minute =  300 second
+| 10 minute =  600 second
+| 30 minute =  1800 second
+*/
+$config['session_login'] = 1800;
 /*
 | Timezone Set
 | Set default Asia/Kuala_Lumpur

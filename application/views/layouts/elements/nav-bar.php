@@ -1,6 +1,9 @@
 <?php $authUser = $this->session->userdata('user_session'); ?>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
+        <div class="navbar-minimize">
+            <button id="minimizeSidebar" class="btn btn-fill btn-icon"><i class="ti-more-alt"></i></button>
+        </div>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle">
                 <span class="sr-only">Toggle navigation</span>
@@ -14,29 +17,15 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="ti-bell"></i>
-                        <p>Notification</p>
-                        <span class="badge bg-warning">2</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Notification 1</a></li>
-                        <li><a href="#">Notification 2</a></li>
-                        <li><a href="#">Another notification</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="ti-settings"></i>
                         <p>Settings</p>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Notification 1</a></li>
-                        <li><a href="#">Notification 2</a></li>
-                        <li><a href="#">Notification 3</a></li>
-                        <li><a href="#">Notification 4</a></li>
-                        <li><a href="#">Another notification</a></li>
+                        <li><a href="#">Menu 1</a></li>
+                        <li><a href="#">Menu 2</a></li>
+                        <li><a href="#">Menu 3</a></li>
+                        <li><a href="#">Menu 4</a></li>
                     </ul>
                 </li>
                 <li>
