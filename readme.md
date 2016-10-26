@@ -3,6 +3,8 @@
 ###################
 
 CodeIgniter is an Application Development Framework
+This application still in Beta version. 
+Some function may not working.
 
 ###################
 ## Database Demo
