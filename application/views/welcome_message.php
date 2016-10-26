@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-xs-7">
                         <div class="numbers">
-                            <p>Bantuan</p>
+                            <p>Kebajikan</p>
                             <?= $countNew ?>
                         </div>
                     </div>
