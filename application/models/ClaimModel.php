@@ -34,10 +34,14 @@ class ClaimModel extends CI_Model
      */
     public function all($limit, $offset)
     {
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
-        $result['rows'] = $this->db->get($this->Table, $limit, $offset);
+        $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
+
+        $this->db->select($this->Table . '.*,members.id "member_id", members.name "member_name"');
+        $this->db->from($this->Table);
+        $this->db->join('members', "members.nric = $this->Table.nric");
+        $this->db->limit($limit, $offset);
+
+        $result['rows'] = $this->db->get();
         $result['num_rows'] = $this->db->count_all_results($this->Table);
         return $result;
     }
@@ -49,10 +53,13 @@ class ClaimModel extends CI_Model
      */
     public function create($data)
     {
-        $this->db->set('status', 1); //set status value
-        $this->db->set('created', date("Y-m-d H:i:s")); //set datetime for created
-        $this->db->set('modified', date("Y-m-d H:i:s")); //set datetime for modified
+        $array = array(
+            'created' => date("Y-m-d H:i:s"), //set datetime for created
+            'modified' => date("Y-m-d H:i:s") //set datetime for modified
+        );
+        $this->db->set($array);
         $this->db->insert($this->Table, $data);
+        return $this->db->insert_id();
     }
 
     /**
@@ -68,17 +75,6 @@ class ClaimModel extends CI_Model
             return $Q->row_array();
         }
     }
-    /**
-     * read exist data
-     * @claim int id
-     * @return void
-     */
-
-    /**
-     * read exist data
-     * @claim int id
-     * @return void
-     */
 
     /**
      * read exist data
@@ -94,7 +90,7 @@ class ClaimModel extends CI_Model
         if ($Q->num_rows() > 0) {
             $claims = $Q->result_array();
             foreach ($claims as $claim) {
-                if($pilih){
+                if ($pilih) {
                     $data[''] = '--Pilih--';
                 }
                 $data[$claim['code']] = $claim['name'];

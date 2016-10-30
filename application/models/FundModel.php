@@ -34,9 +34,8 @@ class FundModel extends CI_Model
      */
     public function all($limit, $offset)
     {
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
+        $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
+
         $this->db->order_by('rank', 'ASC');
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);
         $result['num_rows'] = $this->db->count_all_results($this->Table);

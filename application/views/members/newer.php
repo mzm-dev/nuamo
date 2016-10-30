@@ -3,11 +3,19 @@
         <div class="card">
             <div class="header">
                 <h4 class="title">Senarai Permohonan Baru</h4>
-                <p class="category">Here is a subtitle for this table</p>
                 <div class="pull-right box-tools">
                     <a href="<?= base_url("members/add/"); ?>"
                        class="btn btn-primary btn-sm btn-flat btn-fill"><i class="fa fa-plus"></i> Daftar Ahli</a>
                 </div>
+                <?php echo form_open('members/newer', array('class' => 'form-inline', 'novalidate' => true)); // ?>
+                <div class="form-group">
+                    <label class="sr-only" for="inputSearch">Search</label>
+                    <input type="text" name="query" class="form-control" id="inputSearch" placeholder="Carian">
+                </div>
+                <button type="submit" class="btn btn-wd btn-warning btn-fill btn-flat btn-magnify">
+                    <span class="btn-label"><i class="ti-search"></i></span> Carian
+                </button>
+                <?php echo form_close(); ?>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover">
@@ -22,6 +30,9 @@
                     </thead>
                     <tbody>
                     <?php
+                    if(empty($members->result_array())){
+                        echo '<div class="alert alert-warning"><span>Data Not Found</span></div>';
+                    }
                     $i = 1;
                     foreach ($members->result_array() as $member): ?>
                         <tr>

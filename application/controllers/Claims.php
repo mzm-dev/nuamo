@@ -12,8 +12,10 @@ class Claims extends CI_Controller
     {
         parent::__construct();
         $this->load->model('ClaimModel');
+        $this->load->model('ItemModel');
         $this->load->model('FundModel');
         $this->load->model('ParamModel');
+        $this->load->model('MemberModel');
         $this->isRegistered();
     }
 
@@ -29,6 +31,9 @@ class Claims extends CI_Controller
         }
     }
 
+    /**
+     * @param int $offset
+     */
     public function index($offset = 0)
     {
         $limit = 5;
@@ -36,77 +41,68 @@ class Claims extends CI_Controller
         $data['claims'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 
+        //pagination configuration
         $config = array();
         $config['base_url'] = site_url("claims/index");
         $config['total_rows'] = $data['num_results'];
         $config['per_page'] = $limit;
-        //which uri segment indicates pagination number
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        //max links on a page will be shown
-        $config['num_links'] = 5;
+
         //various pagination configuration
-        //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li>';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="prev">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li>';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li>';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
+        //Get Status Name with prefix code '100'%
+        $data['status_name'] = $this->ParamModel->read_pre('100', false);
 
         $data['main'] = '/claims/index';
         $this->load->view('layouts/default', $data);
     }
 
+    /**
+     *
+     */
     public function add()
     {
-        if ($this->input->post()) {
-            $post = $this->input->post();
 
-            $count = $post['count'];
-            $data = array();
-            foreach ($count as $k => $v) {
-                $data[$k]['id'] = $post['id-' . $v];
-                $data[$k]['amount'] = $post['amount-' . $v];
-            }
-            var_dump($data);
-        }
         $data['funds'] = $this->FundModel->listing();
         //Get Status Name with prefix code '30'%
         $data['bank'] = $this->ParamModel->read_pre('30', false);
 
 
         //set form validation
-//        $this->form_validation->set_rules(array(
-//            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required'),
-//            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required'),
-//            array('field' => 'branch', 'label' => 'Cangan', 'rules' => 'required'),
-//            array('field' => 'status', 'label' => 'Status', 'rules' => 'required')
-//        ));
+        $this->form_validation->set_rules(array(
+            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required'),
+            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required'),
+            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required'),
+            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required')
+        ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = 'claims/add';
             $this->load->view('layouts/default', $data);
         } else {
+            $post = $this->input->post();
+            $count = $this->input->post('count') - 1;
+
             $data = array(
-                'name' => $this->input->post('name'),
-                'code' => $this->input->post('code'),
-                'status' => 1,
+                'nric' => $this->input->post('nric'),
+                'branch' => $this->input->post('branch'),
+                'bank_account' => $this->input->post('bank_account'),
+                'num_account' => $this->input->post('num_account'),
+                'sum' => $this->input->post('sum'),
+
             );
-            $this->UserModel->create($data); //load model
+            $insert_id = $this->ClaimModel->create($data); //load model
+
+            $data = array();
+            for ($x = 0; $x <= $count; $x++) {
+                if ($post['qty-' . $x] != 0) {
+                    $data[$x]['claim_id'] = $insert_id;
+                    $data[$x]['fund_id'] = $post['id-' . $x];
+                    $data[$x]['qty'] = $post['qty-' . $x];
+                    $data[$x]['amount'] = $post['amount-' . $x];
+                }
+            }
+
+            $this->ItemModel->create($data);
             //set flash message
             $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
             redirect('claims/index'); // back to the index
@@ -114,6 +110,9 @@ class Claims extends CI_Controller
 
     }
 
+    /**
+     * @param null $id
+     */
     public function edit($id = null)
     {
         if (!empty($id) && !$this->ClaimModel->exists($id)) {

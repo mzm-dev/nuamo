@@ -541,7 +541,7 @@ $config['bad_password'] = array(
 | 10 minute =  600 second
 | 30 minute =  1800 second
 */
-$config['session_login'] = 1800;
+$config['session_login'] = 3600;
 /*
 | Timezone Set
 | Set default Asia/Kuala_Lumpur

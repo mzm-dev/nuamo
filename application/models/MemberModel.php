@@ -14,23 +14,37 @@ class MemberModel extends CI_Model
      * @return void
      * @desc This function use for checking whether data exists or not
      */
-    public function all($limit, $offset)
+    public function all($search, $is_active, $limit, $offset)
     {
-        $is_active = 1;
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
         $codes = array('1004');
+        $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
+        //Get all data
+
+        if ($search) {
+            $this->db->like('nric', $search);
+            $this->db->or_like('name', $search);
+        }
         $this->db->where_in('status', $codes);
         $this->db->where_in('is_active', $is_active);
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);
 
+        //count all results
+        if ($search) {
+            $this->db->like('nric', $search);
+            $this->db->or_like('name', $search);
+        }
         $this->db->where_in('status', $codes);
         $this->db->where_in('is_active', $is_active);
         $result['num_rows'] = $this->db->count_all_results($this->Table);
+
         return $result;
     }
 
+    /**
+     * @param int $is_active
+     * @param array $codes
+     * @return mixed
+     */
     public function count_all($is_active = 1, $codes = array('1004'))
     {
         $this->db->where_in('status', $codes);
@@ -40,42 +54,32 @@ class MemberModel extends CI_Model
 
     }
 
-    public function all_search($query, $limit, $offset)
-    {
-        $is_active = 1;
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
-        $codes = array('1004');
-        $array = array('name' => $query, 'nric' => $query);
-        $this->db->or_like($array);
-        $this->db->where_in('status', $codes);
-        $this->db->where_in('is_active', $is_active);
-        $result['rows'] = $this->db->get($this->Table, $limit, $offset);
-
-        $this->db->where_in('status', $codes);
-        $this->db->where_in('is_active', $is_active);
-        $result['num_rows'] = $this->db->count_all_results($this->Table);
-        return $result;
-    }
-
     /**
      * @return void
      * @desc This function use for checking whether data exists or not
      */
-    public function all_newer($limit, $offset)
+    public function all_newer($search, $is_active, $limit, $offset)
     {
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
-
         $codes = array('1001', '1002', '1005');
+        $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
+
+        //Num Rows
+        if ($search) {
+            $this->db->like('nric', $search);
+            $this->db->or_like('name', $search);
+        }
+        
         $this->db->where_in('status', $codes);
-        $this->db->where_in('is_active', 0);
+        $this->db->where_in('is_active', $is_active);
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);
 
+        //Num All Rows
+        if ($search) {
+            $this->db->like('nric', $search);
+            $this->db->or_like('name', $search);
+        }
         $this->db->where_in('status', $codes);
-        $this->db->where_in('is_active', 0);
+        $this->db->where_in('is_active', $is_active);
         $result['num_rows'] = $this->db->count_all_results($this->Table);
         return $result;
     }
@@ -88,8 +92,7 @@ class MemberModel extends CI_Model
      */
     public function exists($id)
     {
-        $this->db->where('id', $id);
-        $Q = $this->db->get($this->Table);
+        $Q = $this->db->get_where($this->Table, array('id' => $id));
         if ($Q->num_rows() > 0) {
             return TRUE;
         } else {
@@ -104,8 +107,11 @@ class MemberModel extends CI_Model
      */
     public function create($data)
     {
-        $this->db->set('created', date("Y-m-d H:i:s")); //set datetime for created
-        $this->db->set('modified', date("Y-m-d H:i:s")); //set datetime for modified
+        $array = array(
+            'created' => date("Y-m-d H:i:s"), //set datetime for created
+            'modified' => date("Y-m-d H:i:s") //set datetime for modified
+        );
+        $this->db->set($array);
         $this->db->insert($this->Table, $data);
     }
 
@@ -116,8 +122,7 @@ class MemberModel extends CI_Model
      */
     public function read($id)
     {
-        $this->db->where('id', $id);
-        $Q = $this->db->get($this->Table);
+        $Q = $this->db->get_where($this->Table, array('id' => $id));
         if ($Q->num_rows() > 0) {
             return $Q->row_array();
         }
@@ -130,9 +135,10 @@ class MemberModel extends CI_Model
      */
     public function read_by($key, $val)
     {
-        $this->db->select('id, name, nric,email');
-        $this->db->where($key, $val);
-        $Q = $this->db->get($this->Table);
+        $is_active = 1;
+        $codes = '1004';
+        $this->db->select('id, name, nric,email', 'is_active');
+        $Q = $this->db->get_where($this->Table, array($key => $val, 'status' => $codes, 'is_active' => $is_active));
         if ($Q->num_rows() > 0) {
             return $Q->row_array();
         }

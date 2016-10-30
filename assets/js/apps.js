@@ -73,7 +73,7 @@ $(document).ready(function () {
             $.post(site_url + "members/ajax_member", {key: "nric", val: value})
                 .done(function (res) {
                     var member = JSON.parse(res);
-                    if (member.result || member.data.name) {
+                    if (member.result) {
                         $("#ClaimName").val(member.data.name);
                         $("#nirc-success").show();
                     } else {
@@ -89,13 +89,13 @@ $(document).ready(function () {
     //this calculates values automatically
     calculateSum();
 
-    $(".amount").on("keyup", function () {
+    $(".qty").on("keyup", function () {
         calculateSum();
     });
     function calculateSum() {
         var sum = 0;
         //iterate through each textboxes and add the values
-        $(".amount").each(function () {
+        $(".qty").each(function () {
 
             //add only if the value is number
             if (!isNaN(this.value) && this.value.length != 0) {

@@ -34,9 +34,8 @@ class ParamModel extends CI_Model
      */
     public function all($limit, $offset)
     {
-        if ($offset > 0) {
-            $offset = ($offset - 1) * $limit;
-        }
+        $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
+        
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);
         $result['num_rows'] = $this->db->count_all_results($this->Table);
         return $result;
@@ -68,13 +67,6 @@ class ParamModel extends CI_Model
             return $Q->row_array();
         }
     }
-    /**
-     * read exist data
-     * @param int id
-     * @return void
-     */
-
-
     /**
      * read exist data
      * @param int id

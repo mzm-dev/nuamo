@@ -13,7 +13,6 @@
         </div>
         <div class="content">
             <?php echo form_open('claims/add', array('novalidate' => true)); // ?>
-
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -51,7 +50,7 @@
                         <label for="ClaimBranch" class="control-label">Nama Bank :</label>
                         <?php
                         $attr = array('class' => 'form-control border-input', 'id' => 'ClaimBranch');
-                        echo form_dropdown('branch', $bank, set_value('bank_account'), $attr);
+                        echo form_dropdown('bank_account', $bank, set_value('bank_account'), $attr);
                         ?>
                         <?php echo form_error('bank_account', '<div class="error">', '</div>'); ?>
                     </div>
@@ -73,7 +72,7 @@
                             right: 32%
                         }
 
-                        .amount, .sum {
+                        .qty, .sum {
                             position: absolute;
                             right: 20%;
                             width: 100px;
@@ -89,12 +88,13 @@
 
                     <ul class="tuntutan" type="i">
                         <?php
-                        echo '<input name="count" value="' . count($funds). '" type="text">';
+                        echo '<input name="count" value="' . count($funds) . '" type="hidden">';
                         foreach ($funds as $key => $fund) {
                             echo "<li style='margin: 10px'>";
                             echo $fund['name'] . " <span>- RM " . $fund['amount'] . " x </span>";
                             echo '<input name="id-' . $key . '" hidden="hidden" value="' . $fund['id'] . '" type="text">';
-                            echo '<input name="amount-' . $key . '" min="1" max="5" data-amount="' . $fund['amount'] . '" class="amount" value="0" type="text">';
+                            echo '<input name="amount-' . $key . '" hidden="hidden" value="' . $fund['amount'] . '" type="text">';
+                            echo '<input name="qty-' . $key . '" min="1" max="5" data-amount="' . $fund['amount'] . '" class="qty" value="0" type="text">';
                             echo "</li>";
 
                         } ?>

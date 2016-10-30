@@ -6,16 +6,19 @@
 $controller = $this->uri->segment(1);
 $action = $this->uri->segment(2);
 ?>
-<div class="sidebar" data-background-color="white" data-active-color="danger">
+<div class="sidebar" data-background-color="brown" data-active-color="danger">
     <div class="sidebar-wrapper">
         <div class="logo">
             <a href="<?= base_url() ?>" class="simple-text">
-                <img src="<?= base_url() . 'assets/img/apple-icon.png'; ?>" width="40" alt="Logo"/> NUAMO
+                <img src="<?= base_url() . 'assets/img/apple-icon.png'; ?>" width="60" alt="Logo"/> NUAMO
             </a>
         </div>
 
+        <?php $welcomeController = array(null, "welcome");
+        $welcomeAction = array(null, "welcome"); ?>
         <ul class="nav">
-            <li class="<?= (!$controller && !$action ? 'active' : '') ?>">
+            <?php $class = ((in_array($controller, $welcomeController)) && (in_array($action, $welcomeAction)) ? 'active' : ''); ?>
+            <li class="<?= $class ?>">
                 <a href="<?= base_url(); ?>">
                     <i class="ti-panel"></i>
                     <p>Dashboard</p>
@@ -23,17 +26,18 @@ $action = $this->uri->segment(2);
             </li>
             <!-- Menu Keahlian-->
             <?php $memberController = array("members");
-            $memberAction = array(null, "index", "add", "edit", "view","newer","in_active"); ?>
+            $memberAction = array(null, "index", "add", "edit", "view", "newer", "in_active"); ?>
             <?php $class = ((in_array($controller, $memberController)) && (in_array($action, $memberAction)) ? 'active' : ''); ?>
             <li class="<?= $class ?>">
-                <a data-toggle="collapse" href="#members" aria-expanded="<?= ($class == 'active' ? 'true' : 'false') ?>">
+                <a data-toggle="collapse" href="#members"
+                   aria-expanded="<?= ($class == 'active' ? 'true' : 'false') ?>">
                     <i class="ti-user"></i>
                     <p>Ahli<b class="caret"></b></p>
                 </a>
                 <div class="collapse <?= ($class == 'active' ? 'in' : '') ?>" id="members">
                     <ul class="nav">
-                        <li><a href="<?= base_url("members/newer"); ?>">Senarai Permohonan</a></li>
                         <li><a href="<?= base_url("members/add"); ?>">Daftar Ahli</a></li>
+                        <li><a href="<?= base_url("members/newer"); ?>">Senarai Permohonan</a></li>
                         <li><a href="<?= base_url("members/"); ?>">Senarai Ahli</a></li>
                         <li><a href="<?= base_url("members/in_active"); ?>">Senarai Ahli Luput</a></li>
                     </ul>
@@ -42,18 +46,19 @@ $action = $this->uri->segment(2);
             <!-- ./Menu Keahlian-->
 
             <!-- Menu Bantuan-->
-            <?php $memberController = array("claims","funds");
+            <?php $memberController = array("claims", "funds");
             $memberAction = array(null, "index", "add", "edit", "view"); ?>
             <?php $class = ((in_array($controller, $memberController)) && (in_array($action, $memberAction)) ? 'active' : ''); ?>
             <li class="<?= $class ?>">
                 <a data-toggle="collapse" href="#funds" aria-expanded="<?= ($class == 'active' ? 'true' : 'false') ?>">
                     <i class="ti-gift"></i>
-                    <p>Tabung Bantuan <b class="caret"></b></p>
+                    <p>Tabung Kebajikan <b class="caret"></b></p>
                 </a>
                 <div class="collapse <?= ($class == 'active' ? 'in' : '') ?>" id="funds">
                     <ul class="nav">
-                        <li><a href="<?= base_url("funds/"); ?>">Jenis Tututan</a></li>
+                        <li><a href="<?= base_url("claims/add"); ?>">Daftar Permohonan</a></li>
                         <li><a href="<?= base_url("claims/"); ?>">Senarai Permohonan</a></li>
+                        <li><a href="<?= base_url("funds/"); ?>">Jenis Tututan</a></li>
                     </ul>
                 </div>
             </li>

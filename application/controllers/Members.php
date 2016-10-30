@@ -27,51 +27,29 @@ class Members extends CI_Controller
             redirect('auths/login');
         }
     }
+
     /**
      * @param int $offset
      */
     public function index($offset = 0)
     {
+        $query = null;
         $limit = 10;
-        
-        if($this->input->method()){
-            $result = $this->MemberModel->all($limit, $offset);
-        }else{
-            $result = $this->MemberModel->all_search($this->input->post('query'), $limit, $offset);
-        }
+        $is_active = 1;
+
+        $search = ($this->input->method() ? $this->input->post('query') : null);
+        $result = $this->MemberModel->all($search, $is_active, $limit, $offset);
 
         $data['members'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 
+        //pagination configuration
         $config = array();
         $config['base_url'] = site_url("members/index");
         $config['total_rows'] = $data['num_results'];
         $config['per_page'] = $limit;
-        //which uri segment indicates pagination number
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        //max links on a page will be shown
-        $config['num_links'] = 5;
+
         //various pagination configuration
-        //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li>';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="prev">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li>';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li>';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
@@ -84,41 +62,24 @@ class Members extends CI_Controller
      */
     public function in_active($offset = 0)
     {
+
+        $query = null;
         $limit = 10;
         $is_active = 0;
-        $result = $this->MemberModel->all($is_active, $limit, $offset);
+
+        $search = ($this->input->method() ? $this->input->post('query') : null);
+        $result = $this->MemberModel->all($search, $is_active, $limit, $offset);
+
         $data['members'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 
+        //pagination configuration
         $config = array();
         $config['base_url'] = site_url("members/in_active");
         $config['total_rows'] = $data['num_results'];
         $config['per_page'] = $limit;
-        //which uri segment indicates pagination number
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        //max links on a page will be shown
-        $config['num_links'] = 5;
+
         //various pagination configuration
-        //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li>';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="prev">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li>';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li>';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
@@ -131,40 +92,24 @@ class Members extends CI_Controller
      */
     public function newer($offset = 0)
     {
+
+        $query = null;
         $limit = 10;
-        $result = $this->MemberModel->all_newer($limit, $offset);
+        $is_active = 0;
+
+        $search = ($this->input->method() ? $this->input->post('query') : null);
+        $result = $this->MemberModel->all_newer($search, $is_active, $limit, $offset);
+
         $data['members'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 
+        //pagination configuration
         $config = array();
         $config['base_url'] = site_url("members/newer");
         $config['total_rows'] = $data['num_results'];
         $config['per_page'] = $limit;
-        //which uri segment indicates pagination number
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        //max links on a page will be shown
-        $config['num_links'] = 5;
+
         //various pagination configuration
-        //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li>';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="prev">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li>';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li>';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
@@ -174,7 +119,6 @@ class Members extends CI_Controller
         $data['main'] = '/members/newer';
         $this->load->view('layouts/default', $data);
     }
-
 
     /**
      *
@@ -284,7 +228,11 @@ class Members extends CI_Controller
 
             //set flash message
             $this->session->set_flashdata('item', array('message' => 'The membereter has been saved', 'class' => 'success')); //danger or success
-            redirect('members/index'); // back to the index
+            if ($this->input->post('status') == 1004) {
+                redirect('members/index'); // back to the index
+            } else {
+                redirect('members/newer'); // back to the newer
+            }
         }
 
     }
@@ -326,7 +274,7 @@ class Members extends CI_Controller
     }
 
     /**
-     * 
+     *
      */
     public function ajax_member()
     {
