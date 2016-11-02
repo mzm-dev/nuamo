@@ -203,7 +203,6 @@ class Claims extends CI_Controller
     /**
      * @param null $id
      */
-
     public function upload($id = null)
     {
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
@@ -213,7 +212,7 @@ class Claims extends CI_Controller
 
         //check if $id is missing, use post(id) as replace segment id
         $id = ($this->input->post() ? $this->input->post('id') : $id);
-        //fetch claim record for the given employee no
+        
         $data['attaches'] = $this->AttachmentModel->listing($id);
         $data['items'] = $this->ItemModel->listing($id);
         $data['claim'] = $this->ClaimModel->read($id);
@@ -230,14 +229,13 @@ class Claims extends CI_Controller
             $this->load->view('layouts/default', $data);
         } else {
             $fileName = $fileSize = '';
-            var_dump($_FILES);
+            //var_dump($_FILES);
             $fileName = microtime(true) . '.' . $id; //1478046270.93.1.jpg
             $config['upload_path'] = './uploads/';
-            $config['allowed_types'] = 'gif|jpg|png|zip|rar';
+            $config['allowed_types'] = 'gif|jpeg|jpg|png|zip|rar';
             $config['file_name'] = $fileName . "." . explode('.', $_FILES['document']['name'])[1];
             $config['file_size'] = $_FILES['document']['size'];
-            $config['max_size'] = 2048;
-            $this->load->library('upload', $config);
+            $config['max_size'] = 2048; //2MB
             $this->upload->initialize($config);
             $error = $_FILES['document']['error'];
 
@@ -260,6 +258,10 @@ class Claims extends CI_Controller
         }
     }
 
+    /**
+     * @param $code
+     * @return mixed
+     */
     private function ralat($code)
     {
         $phpFileUploadErrors = array(

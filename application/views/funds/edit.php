@@ -56,7 +56,6 @@
             </div>
             <div class="clearfix"></div>
             <?php echo form_close(); ?>
-            </form>
         </div>
     </div>
 </div>
