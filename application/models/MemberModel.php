@@ -68,7 +68,7 @@ class MemberModel extends CI_Model
             $this->db->like('nric', $search);
             $this->db->or_like('name', $search);
         }
-        
+
         $this->db->where_in('status', $codes);
         $this->db->where_in('is_active', $is_active);
         $result['rows'] = $this->db->get($this->Table, $limit, $offset);
@@ -122,7 +122,11 @@ class MemberModel extends CI_Model
      */
     public function read($id)
     {
-        $Q = $this->db->get_where($this->Table, array('id' => $id));
+        $this->db->select($this->Table . '.*, params.name "status_name"');
+        $this->db->from($this->Table);
+        $this->db->where("$this->Table.id", $id);
+        $this->db->join('params', "params.code = $this->Table.status");
+        $Q = $this->db->get();
         if ($Q->num_rows() > 0) {
             return $Q->row_array();
         }

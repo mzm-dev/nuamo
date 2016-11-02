@@ -18,7 +18,7 @@
                     <div class="form-group">
                         <label for="ClaimNric" class="control-label">No Kad Pengenalan :</label>
                         <input type="text" class="form-control border-input" name="nric" id="ClaimNric"
-                               placeholder="cth: 780911052381">
+                               placeholder="cth: 780911052381" value="<?= set_value('nric') ?>">
                         <div class="form-control-feedback" id="nirc-success">
                             <i class="fa fa-check-square-o"></i>
                         </div>
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label for="ClaimName" class="control-label">Nama Pemohon :</label>
                         <input type="text" class="form-control border-input" name="name" id="ClaimName"
-                               readonly="readonly" placeholder="Nama Penuh Pemohon">
+                               readonly="readonly" placeholder="Nama Penuh Pemohon" value="<?= set_value('name') ?>">
                         <?php echo form_error('name', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label for="ClaimBranch" class="control-label">Cawangan :</label>
                         <input type="text" class="form-control border-input" name="branch" id="ClaimBranch"
-                               placeholder="Cawangan">
+                               placeholder="Cawangan" value="<?= set_value('branch') ?>">
                         <?php echo form_error('branch', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <label for="ClaimAccount" class="control-label">No Akaun :</label>
                         <input type="text" class="form-control border-input" name="num_account" id="ClaimAccount"
-                               placeholder="xxxxx">
+                               placeholder="xxxxx" value="<?= set_value('num_account') ?>">
                         <?php echo form_error('num_account', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>

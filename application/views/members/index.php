@@ -33,10 +33,11 @@
                     if(empty($members->result_array())){
                         echo '<div class="alert alert-warning"><span>Data Not Found</span></div>';
                     }
-                    $i = 1;
+                 
+                    $i = ($this->pagination->cur_page - 1) * $this->pagination->per_page;
                     foreach ($members->result_array() as $member): ?>
                         <tr>
-                            <td class="col-md-1"><?= $i ?></td>
+                            <td class="col-md-1"><?= $i +1 ?></td>
                             <td class="col-md-1"><?= $member['nric'] ?></td>
                             <td><?= $member['name'] ?></td>
                             <td class="col-md-1 text-center">
@@ -54,8 +55,7 @@
                         </tr>
                         <?php
                         $i++;
-                    endforeach;
-                    ?>
+                    endforeach; ?>
                     </tbody>
                 </table>
 

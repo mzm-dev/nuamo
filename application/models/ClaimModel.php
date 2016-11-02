@@ -32,13 +32,16 @@ class ClaimModel extends CI_Model
      * @claim $offset
      * @return mixed
      */
-    public function all($limit, $offset)
+    public function all($status, $limit, $offset)
     {
+
         $offset = ($offset > 0 ? ($offset - 1) * $limit : $offset);
 
-        $this->db->select($this->Table . '.*,members.id "member_id", members.name "member_name"');
+        $this->db->select($this->Table . '.*, params.name "status_name", members.id "member_id", members.name "member_name"');
         $this->db->from($this->Table);
+        $this->db->where_in('claims.status', $status);
         $this->db->join('members', "members.nric = $this->Table.nric");
+        $this->db->join('params', "params.code = $this->Table.status");
         $this->db->limit($limit, $offset);
 
         $result['rows'] = $this->db->get();
@@ -69,8 +72,21 @@ class ClaimModel extends CI_Model
      */
     public function read($id)
     {
-        $this->db->where('id', $id);
-        $Q = $this->db->get($this->Table);
+
+        $this->db->select(
+            $this->Table . '.*,
+            params.name "status_name", 
+            members.id "member_id", 
+            members.name "member_name", 
+            members.email "member_email",
+            members.phone "member_phone",
+            members.telephone "member_telephone"
+        ');
+        $this->db->from($this->Table);
+        $this->db->where("$this->Table.id", $id);
+        $this->db->join('members', "members.nric = $this->Table.nric");
+        $this->db->join('params', "params.code = $this->Table.status");
+        $Q = $this->db->get();
         if ($Q->num_rows() > 0) {
             return $Q->row_array();
         }

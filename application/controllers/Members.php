@@ -34,7 +34,7 @@ class Members extends CI_Controller
     public function index($offset = 0)
     {
         $query = null;
-        $limit = 10;
+        $limit = 20;
         $is_active = 1;
 
         $search = ($this->input->method() ? $this->input->post('query') : null);
@@ -94,7 +94,7 @@ class Members extends CI_Controller
     {
 
         $query = null;
-        $limit = 10;
+        $limit = 20;
         $is_active = 0;
 
         $search = ($this->input->method() ? $this->input->post('query') : null);
@@ -248,7 +248,6 @@ class Members extends CI_Controller
         }
 
         $data['status'] = array('' => '--Tiada Maklumat--', '0' => 'Tidak Aktif', '1' => 'Aktif');
-        $data['status_name'] = $this->ParamModel->read_pre('100');
         $data['member'] = $this->MemberModel->read($id);
         $data['main'] = '/members/view';
         $this->load->view('layouts/default', $data);

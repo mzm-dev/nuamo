@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Params extends CI_Controller
+class States extends CI_Controller
 {
 
     /**
@@ -11,7 +11,7 @@ class Params extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('ParamModel');
+        $this->load->model('StateModel');
         $this->isRegistered();
     }
 
@@ -27,15 +27,24 @@ class Params extends CI_Controller
         }
     }
 
+    /**
+     * Basic example dari CI Document
+     * $this->load->library('pagination');
+     * $config['base_url'] = 'http://example.com/index.php/test/page/';
+     * $config['total_rows'] = 200;
+     * $config['per_page'] = 20;
+     *
+     */
     public function index($offset = 0)
     {
-        $limit = 20;
-        $result = $this->ParamModel->all($limit, $offset);
-        $data['params'] = $result['rows'];
+
+        $limit = 20; //Limit untuk paparan senarai
+        $result = $this->StateModel->all($limit, $offset);
+        $data['states'] = $result['rows'];
         $data['num_results'] = $result['num_rows'];
 
         $config = array();
-        $config['base_url'] = site_url("params/index");
+        $config['base_url'] = site_url("states/index");
         $config['total_rows'] = $data['num_results'];
         $config['per_page'] = $limit;
         //which uri segment indicates pagination number
@@ -66,24 +75,23 @@ class Params extends CI_Controller
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
-        $data['main'] = '/params/index';
+        $data['main'] = '/states/index';
         $this->load->view('layouts/default', $data);
-
     }
 
     public function add()
     {
-        //fetch param status record for the given prefix code
-        $data['statuses'] = $this->ParamModel->is_active();
+        //fetch state status record for the given prefix code
+        $data['statuses'] = $this->StateModel->is_active();
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required'),
-            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required|is_unique[params.code]'),
+            array('field' => 'name', 'label' => 'Stateeter Name', 'rules' => 'required'),
+            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required|is_unique[states.code]'),
             array('field' => 'status', 'label' => 'Status', 'rules' => 'required')
         ));
         if ($this->form_validation->run() == FALSE) {
-            $data['main'] = '/params/add';
+            $data['main'] = '/states/add';
             $this->load->view('layouts/default', $data);
         } else {
             $data = array(
@@ -101,26 +109,26 @@ class Params extends CI_Controller
 
     public function edit($id = null)
     {
-        if (!empty($id) && !$this->ParamModel->exists($id)) {
+        if (!empty($id) && !$this->StateModel->exists($id)) {
             $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
-            redirect('params/index'); // back to the index
+            redirect('states/index'); // back to the index
         }
 
         //check if $id is missing, use post(id) as replace segment id
         $id = ($this->input->post() ? $this->input->post('id') : $id);
-        //fetch param record for the given employee no
-        $data['param'] = $this->ParamModel->read($id);
+        //fetch state record for the given employee no
+        $data['state'] = $this->StateModel->read($id);
         
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required'),
+            array('field' => 'name', 'label' => 'Stateeter Name', 'rules' => 'required'),
             array('field' => 'code', 'label' => 'Kod', 'rules' => 'required'),
             array('field' => 'status', 'label' => 'status', 'rules' => 'required')
         ));
 
         //if validation not run, just show form
         if ($this->form_validation->run() == FALSE) {
-            $data['main'] = '/params/edit';
+            $data['main'] = '/states/edit';
             $this->load->view('layouts/default', $data);
         } else {
             $data = array(
@@ -129,30 +137,30 @@ class Params extends CI_Controller
                 'code' => $this->input->post('code'),
                 'status' => $this->input->post('status')
             );
-            $this->ParamModel->modified($data); //load model
+            $this->StateModel->modified($data); //load model
 
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'The parameter has been saved', 'class' => 'success')); //danger or success
-            redirect('params/index'); // back to the index
+            $this->session->set_flashdata('item', array('message' => 'The stateeter has been saved', 'class' => 'success')); //danger or success
+            redirect('states/index'); // back to the index
         }
 
     }
 
     /**
      * delete method
-     * @param string user_id
+     * @state string user_id
      */
     public function delete($id)
     {
         //Cheching data is not empty
-        if (!$this->ParamModel->exists($id)) {
+        if (!$this->StateModel->exists($id)) {
             $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
-            redirect('params/index'); // back to the index
+            redirect('states/index'); // back to the index
         }
-        if ($this->ParamModel->delete($id)) {
+        if ($this->StateModel->delete($id)) {
             //set flash message
             $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
-            redirect('params/index'); // back to the index
+            redirect('states/index'); // back to the index
         }
 
     }

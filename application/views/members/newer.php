@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                     <?php
-                    if(empty($members->result_array())){
+                    if (empty($members->result_array())) {
                         echo '<div class="alert alert-warning"><span>Data Not Found</span></div>';
                     }
                     $i = 1;
@@ -54,8 +54,7 @@
                         </tr>
                         <?php
                         $i++;
-                    endforeach;
-                    ?>
+                    endforeach; ?>
                     </tbody>
                 </table>
             </div>

@@ -47,7 +47,7 @@ $action = $this->uri->segment(2);
 
             <!-- Menu Bantuan-->
             <?php $memberController = array("claims", "funds");
-            $memberAction = array(null, "index", "add", "edit", "view"); ?>
+            $memberAction = array(null, "index", "add", "edit", "view","newer"); ?>
             <?php $class = ((in_array($controller, $memberController)) && (in_array($action, $memberAction)) ? 'active' : ''); ?>
             <li class="<?= $class ?>">
                 <a data-toggle="collapse" href="#funds" aria-expanded="<?= ($class == 'active' ? 'true' : 'false') ?>">
@@ -57,7 +57,8 @@ $action = $this->uri->segment(2);
                 <div class="collapse <?= ($class == 'active' ? 'in' : '') ?>" id="funds">
                     <ul class="nav">
                         <li><a href="<?= base_url("claims/add"); ?>">Daftar Permohonan</a></li>
-                        <li><a href="<?= base_url("claims/"); ?>">Senarai Permohonan</a></li>
+                        <li><a href="<?= base_url("claims/newer"); ?>">Permohonan Baru</a></li>
+                        <li><a href="<?= base_url("claims/"); ?>">Rekod Permohonan</a></li>
                         <li><a href="<?= base_url("funds/"); ?>">Jenis Tututan</a></li>
                     </ul>
                 </div>

@@ -2,7 +2,7 @@
     <div class="col-lg-12 col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">Tuntutan</h4>
+                <h4 class="title">Rekod Permohonan</h4>
                 <div class="pull-right box-tools">
                     <a href="<?= base_url("claims/add"); ?>"
                        class="btn btn-primary btn-sm btn-flat btn-fill"><i class="fa fa-plus"></i>&nbsp;Daftar Tuntutan</a>
@@ -40,7 +40,7 @@
                             <td class="col-md-3"><a href='<?= base_url("members/view/" . $claim['member_id']); ?>'><?= $claim['member_name'] ?></a></td>
                             <td><?= $claim['nric'] ?></td>
                             <td class="col-md-2">
-                                <?= $status_name[$claim['status']]; ?>
+                                <?= $claim['status_name']; ?>
                             </td>
                             <td class="col-md-2">
                                 <a href="<?= base_url("claims/view/" . $claim['id']); ?>"
