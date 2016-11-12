@@ -134,7 +134,7 @@
             </div>
             <div class="text-left">
                 <input value="<?= $this->uri->segment(3); ?>" name="redirect" hidden="hidden"/>
-                <button type="submit" class="btn btn-info btn-fill btn-wd">Save</button>
+                <button type="submit" class="btn btn-info btn-fill btn-wd">Simpan</button>
             </div>
             <div class="clearfix"></div>
             <?php echo form_close(); ?>

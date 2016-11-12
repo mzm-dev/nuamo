@@ -22,7 +22,7 @@ class Funds extends CI_Controller
     public function isRegistered()
     {
         if (($this->session->userdata('user_session') == FALSE)) {
-            $this->session->set_flashdata('item', array('message' => 'You are not authorized. Please login!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Capaian halaman tidak dibenarkan. Sila Log Masuk', 'class' => 'danger')); //danger or success
             redirect('auths/login');
         }
     }
@@ -74,10 +74,22 @@ class Funds extends CI_Controller
     {
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'rank', 'label' => 'Turutan', 'rules' => 'is_unique[funds.rank]'),
-            array('field' => 'name', 'label' => 'Nama Tuntutan', 'rules' => 'required'),
-            array('field' => 'amount', 'label' => 'Nilai', 'rules' => 'required'),
-            array('field' => 'is_active', 'label' => 'Status', 'rules' => 'required')
+            array('field' => 'rank', 'label' => 'Turutan', 'rules' => 'is_unique[funds.rank]',
+                'errors' => array(
+                    'is_unique' => '{field} telah wujud.',
+                )),
+            array('field' => 'name', 'label' => 'Nama Tuntutan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'amount', 'label' => 'Nilai', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'is_active', 'label' => 'Status', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = '/funds/add';
@@ -91,7 +103,7 @@ class Funds extends CI_Controller
             );
             $this->FundModel->create($data); //load model
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya disimpan.', 'class' => 'success')); //danger or success
             redirect('funds/index'); // back to the index
         }
 
@@ -100,7 +112,7 @@ class Funds extends CI_Controller
     public function edit($id = null)
     {
         if (!empty($id) && !$this->FundModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('funds/index'); // back to the index
         }
 
@@ -111,10 +123,22 @@ class Funds extends CI_Controller
         
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'rank', 'label' => 'Turutan', 'rules' => 'required'),
-            array('field' => 'name', 'label' => 'Nama Tuntutan', 'rules' => 'required'),
-            array('field' => 'amount', 'label' => 'Nilai', 'rules' => 'required'),
-            array('field' => 'is_active', 'label' => 'Status', 'rules' => 'required')
+            array('field' => 'rank', 'label' => 'Turutan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'name', 'label' => 'Nama Tuntutan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'amount', 'label' => 'Nilai', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'is_active', 'label' => 'Status', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
 
         //if validation not run, just show form
@@ -132,7 +156,7 @@ class Funds extends CI_Controller
             $this->FundModel->modified($data); //load model
 
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'The fundeter has been saved', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dikemaskini.', 'class' => 'success')); //danger or success
             redirect('funds/index'); // back to the index
         }
 
@@ -146,12 +170,12 @@ class Funds extends CI_Controller
     {
         //Cheching data is not empty
         if (!$this->FundModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('funds/index'); // back to the index
         }
         if ($this->FundModel->delete($id)) {
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Fund deleted', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dihapuskan.', 'class' => 'success')); //danger or success
             redirect('funds/index'); // back to the index
         }
 

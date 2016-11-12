@@ -26,8 +26,16 @@ class Auths extends CI_Controller
     {
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'email', 'label' => 'Email', 'rules' => 'trim|required'),
-            array('field' => 'password', 'label' => 'Password', 'rules' => 'trim|required')
+            array('field' => 'email', 'label' => 'Email', 'rules' => 'trim|required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ),
+            ),
+            array('field' => 'password', 'label' => 'Kata Laluan', 'rules' => 'trim|required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )
+            )
         ));
         //if validation not run, just show form
         if ($this->form_validation->run() == FALSE) {
@@ -45,7 +53,7 @@ class Auths extends CI_Controller
             } else if ($result && $user) { //check if used default password, redirect to false change own password
                 redirect('users/change_password');
             } else {
-                $this->session->set_flashdata('item', array('message' => 'Wrong Authname/Password. Please try again.', 'class' => 'danger')); //danger or success
+                $this->session->set_flashdata('item', array('message' => 'E-mel/Kata Laluan tidak sah. Sila cuba lagi.', 'class' => 'danger')); //danger or success
                 redirect('auths/login'); // back to the login
             }
         }
@@ -54,7 +62,7 @@ class Auths extends CI_Controller
     public function logout()
     {
         if (($this->session->userdata('user_session') == FALSE)) {
-            $this->session->set_flashdata('item', array('message' => 'You are not authorized. Please login!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Capaian halaman tidak dibenarkan. Sila Log Masuk', 'class' => 'danger')); //danger or success
             redirect('auths/login');
         } else {
             $this->session->unset_userdata('user_session');
@@ -68,7 +76,11 @@ class Auths extends CI_Controller
     {
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'email', 'label' => 'Email', 'rules' => 'trim|required')
+            array('field' => 'email', 'label' => 'Email', 'rules' => 'trim|required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ),
+            )
         ));
         //if validation not run, just show form
         if ($this->form_validation->run() == FALSE) {
@@ -105,12 +117,12 @@ class Auths extends CI_Controller
                 );
                 $this->UserModel->modified($data); //load model
                 $this->send_email_password($user, $new_password); //load model
-                $this->session->set_flashdata('item', array('message' => 'Password has been reset, please check email. : ' . $new_password, 'class' => 'success')); //danger or success
+                $this->session->set_flashdata('item', array('message' => 'Kata Laluan telah diperbaharui, sila semak e-mel anda. : ' . $new_password, 'class' => 'success')); //danger or success
             } else {
-                $this->session->set_flashdata('item', array('message' => 'Token is expired', 'class' => 'danger')); //danger or success
+                $this->session->set_flashdata('item', array('message' => 'Kekunci tamat tempoh.', 'class' => 'danger')); //danger or success
             }
         } else {
-            $this->session->set_flashdata('item', array('message' => 'Invalid Request', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah.', 'class' => 'danger')); //danger or success
         }
         redirect('auths/login'); // back to the login
     }

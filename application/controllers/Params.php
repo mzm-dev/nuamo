@@ -22,7 +22,7 @@ class Params extends CI_Controller
     public function isRegistered()
     {
         if (($this->session->userdata('user_session') == FALSE)) {
-            $this->session->set_flashdata('item', array('message' => 'You are not authorized. Please login!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Capaian halaman tidak dibenarkan. Sila log masuk!', 'class' => 'danger')); //danger or success
             redirect('auths/login');
         }
     }
@@ -78,9 +78,19 @@ class Params extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required'),
-            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required|is_unique[params.code]'),
-            array('field' => 'status', 'label' => 'Status', 'rules' => 'required')
+            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required|is_unique[params.code]',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'is_unique' => '{field} telah wujud.',
+                )),
+            array('field' => 'status', 'label' => 'Status', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = '/params/add';
@@ -93,7 +103,7 @@ class Params extends CI_Controller
             );
             $this->UserModel->create($data); //load model
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya disimpan', 'class' => 'success')); //danger or success
             redirect('users/index'); // back to the index
         }
 
@@ -102,7 +112,7 @@ class Params extends CI_Controller
     public function edit($id = null)
     {
         if (!empty($id) && !$this->ParamModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('params/index'); // back to the index
         }
 
@@ -113,9 +123,18 @@ class Params extends CI_Controller
         
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required'),
-            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required'),
-            array('field' => 'status', 'label' => 'status', 'rules' => 'required')
+            array('field' => 'name', 'label' => 'Parameter Name', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'status', 'label' => 'status', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
 
         //if validation not run, just show form
@@ -132,7 +151,7 @@ class Params extends CI_Controller
             $this->ParamModel->modified($data); //load model
 
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'The parameter has been saved', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dikemaskini', 'class' => 'success')); //danger or success
             redirect('params/index'); // back to the index
         }
 
@@ -146,12 +165,12 @@ class Params extends CI_Controller
     {
         //Cheching data is not empty
         if (!$this->ParamModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('params/index'); // back to the index
         }
         if ($this->ParamModel->delete($id)) {
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dihapuskan', 'class' => 'success')); //danger or success
             redirect('params/index'); // back to the index
         }
 

@@ -36,7 +36,7 @@
 
             <div class="text-left">
                 <div class="text-left">
-                    <button type="submit" class="btn btn-info btn-fill btn-wd">Update</button>
+                    <button type="submit" class="btn btn-info btn-fill btn-wd">Kemaskini</button>
                 </div>
                 <div class="clearfix"></div>
                 <?php echo form_close(); ?>

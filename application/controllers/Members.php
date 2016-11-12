@@ -24,7 +24,7 @@ class Members extends CI_Controller
     public function isRegistered()
     {
         if (($this->session->userdata('user_session') == FALSE)) {
-            $this->session->set_flashdata('item', array('message' => 'You are not authorized. Please login!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Capaian halaman tidak dibenarkan. Sila Log Masuk!', 'class' => 'danger')); //danger or success
             redirect('auths/login');
         }
     }
@@ -129,20 +129,61 @@ class Members extends CI_Controller
         $data['status'] = $this->ParamModel->read_pre('100');
         $data['states'] = $this->StateModel->read_pre();
 
+
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
-            array('field' => 'name', 'label' => 'Nama', 'rules' => 'required'),
-            array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email'),
-            array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required'),
-            array('field' => 'telephone', 'label' => 'No Telefon Bimbit', 'rules' => 'required'),
-            array('field' => 'nric', 'label' => 'No K/P', 'rules' => 'required|numeric'),
-            array('field' => 'age', 'label' => 'Umur', 'rules' => 'required|numeric'),
-            array('field' => 'year', 'label' => 'Tahun', 'rules' => 'required|numeric'),
-            array('field' => 'dob', 'label' => 'Tarikh Lahir', 'rules' => 'required'),
-            array('field' => 'dop', 'label' => 'Tarikh Lantikan', 'rules' => 'required'),
-            array('field' => 'add_office', 'label' => 'Alamat Pejabat', 'rules' => 'required'),
-            array('field' => 'address', 'label' => 'Alamat Rumah', 'rules' => 'required'),
+            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'name', 'label' => 'Nama', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'valid_email' => '{field} tidak sah.',
+                )),
+            array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'telephone', 'label' => 'No Telefon Bimbit', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'nric', 'label' => 'No K/P', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'age', 'label' => 'Umur', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'year', 'label' => 'Tahun', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'dob', 'label' => 'Tarikh Lahir', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'dop', 'label' => 'Tarikh Lantikan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'add_office', 'label' => 'Alamat Pejabat', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'address', 'label' => 'Alamat Rumah', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
         ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = '/members/add';
@@ -168,7 +209,7 @@ class Members extends CI_Controller
 
 
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Makumat berjaya disimpan.', 'class' => 'success')); //danger or success
             redirect('members/index'); // back to the index
         }
     }
@@ -179,7 +220,7 @@ class Members extends CI_Controller
     public function edit($id = null)
     {
         if (!empty($id) && !$this->MemberModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
 
@@ -192,19 +233,62 @@ class Members extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
-            array('field' => 'name', 'label' => 'Nama', 'rules' => 'required'),
-            array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email'),
-            array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required'),
-            array('field' => 'telephone', 'label' => 'No Telefon Bimbit', 'rules' => 'required'),
-            array('field' => 'nric', 'label' => 'No K/P', 'rules' => 'required|numeric'),
-            array('field' => 'age', 'label' => 'Umur', 'rules' => 'required|numeric'),
-            array('field' => 'year', 'label' => 'Tahun', 'rules' => 'required|numeric'),
-            array('field' => 'dob', 'label' => 'Tarikh Lahir', 'rules' => 'required'),
-            array('field' => 'dop', 'label' => 'Tarikh Lantikan', 'rules' => 'required'),
-            array('field' => 'add_office', 'label' => 'Alamat Pejabat', 'rules' => 'required'),
-            array('field' => 'address', 'label' => 'Alamat Rumah', 'rules' => 'required'),
-            array('field' => 'status', 'label' => 'Status Pendafataran', 'rules' => 'required'),
+            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'name', 'label' => 'Nama', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'valid_email' => '{field} tidak sah.',
+                )),
+            array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'telephone', 'label' => 'No Telefon Bimbit', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'nric', 'label' => 'No K/P', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'age', 'label' => 'Umur', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'year', 'label' => 'Tahun', 'rules' => 'required|numeric',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                    'numeric' => '{field} tidak sah.',
+                )),
+            array('field' => 'dob', 'label' => 'Tarikh Lahir', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'dop', 'label' => 'Tarikh Lantikan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'add_office', 'label' => 'Alamat Pejabat', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'address', 'label' => 'Alamat Rumah', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'status', 'label' => 'Status Pendafataran', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
         ));
 
         //if validation not run, just show form
@@ -232,7 +316,7 @@ class Members extends CI_Controller
             $this->MemberModel->modified($data); //load model
 
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'The membereter has been saved', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dikemaskini', 'class' => 'success')); //danger or success
             if ($this->input->post('status') == 1004) {
                 redirect('members/index'); // back to the index
             } else {
@@ -248,7 +332,7 @@ class Members extends CI_Controller
     public function view($id = null)
     {
         if (!empty($id) && !$this->MemberModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
 
@@ -264,7 +348,7 @@ class Members extends CI_Controller
     public function cetak($id = null)
     {
         if (!empty($id) && !$this->MemberModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
 
@@ -282,12 +366,12 @@ class Members extends CI_Controller
     {
         //Cheching data is not empty
         if (!$this->MemberModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
         if ($this->MemberModel->delete($id)) {
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dihapuskan', 'class' => 'success')); //danger or success
             redirect('members/index'); // back to the index
         }
 

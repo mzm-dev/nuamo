@@ -27,7 +27,7 @@ class Claims extends CI_Controller
     public function isRegistered()
     {
         if (($this->session->userdata('user_session') == FALSE)) {
-            $this->session->set_flashdata('item', array('message' => 'You are not authorized. Please login!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Capaian halaman tidak dibenarkan. Sila Log Masuk', 'class' => 'danger')); //danger or success
             redirect('auths/login');
         }
     }
@@ -97,10 +97,22 @@ class Claims extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required'),
-            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required'),
-            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required'),
-            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required')
+            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = 'claims/add';
@@ -133,7 +145,7 @@ class Claims extends CI_Controller
 
             $this->ItemModel->create($data);
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya disimpan.', 'class' => 'success')); //danger or success
             redirect('claims/upload/' . $insert_id); // back to the index
         }
 
@@ -146,7 +158,7 @@ class Claims extends CI_Controller
     {
 
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('claims/index'); // back to the index
         }
 
@@ -159,10 +171,22 @@ class Claims extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required'),
-            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required'),
-            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required'),
-            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required')
+            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ))
         ));
         if ($this->form_validation->run() == FALSE) {
             $data['main'] = 'claims/edit';
@@ -200,7 +224,7 @@ class Claims extends CI_Controller
             $this->ItemModel->create($data);
             $redirect = $this->input->post('redirect');
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya kemaskini.', 'class' => 'success')); //danger or success
             redirect("claims/$redirect"); // back to the index
         }
     }
@@ -211,7 +235,7 @@ class Claims extends CI_Controller
     public function view($view, $id = null)
     {
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
         $data['funds'] = $this->ItemModel->listing_join($id);
@@ -220,13 +244,14 @@ class Claims extends CI_Controller
         $data['main'] = '/claims/view';
         $this->load->view('layouts/default', $data);
     }
+
     /**
      * @param null $id
      */
     public function cetak($id = null)
     {
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('members/index'); // back to the index
         }
         $data['funds'] = $this->ItemModel->listing_join($id);
@@ -245,12 +270,12 @@ class Claims extends CI_Controller
     {
         //Cheching data is not empty
         if (!$this->ClaimModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('claims/index'); // back to the index
         }
         if ($this->ClaimModel->delete($id)) {
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dihapuskan.', 'class' => 'success')); //danger or success
             redirect('claims/index'); // back to the index
         }
 
@@ -262,7 +287,7 @@ class Claims extends CI_Controller
     public function upload($id = null)
     {
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('claims/newer'); // back to the index
         }
 
@@ -276,8 +301,14 @@ class Claims extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'title', 'label' => 'Tajuk Fail', 'rules' => 'required'),
-            array('field' => 'document', 'label' => 'Dokumen', 'rules' => 'required')
+            array('field' => 'title', 'label' => 'Tajuk Fail', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                )),
+            array('field' => 'document', 'label' => 'Dokumen', 'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Medan {field} wajib diisi.',
+                ),)
         ));
 
         //if validation not run, just show form
@@ -306,9 +337,9 @@ class Claims extends CI_Controller
                     'file_size' => $fileSize,
                 );
                 $this->AttachmentModel->create($data);
-                $this->session->set_flashdata('item', array('message' => 'The Upload has been saved', 'class' => 'success')); //danger or success
+                $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya disimpan.', 'class' => 'success')); //danger or success
             } else {
-                $this->session->set_flashdata('item', array('message' => 'The Upload not success, please try again. ' . $this->ralat($error), 'class' => 'danger')); //danger or success
+                $this->session->set_flashdata('item', array('message' => 'Maklumat gagal disimpan. Sila cuba lagi. ' . $this->ralat($error), 'class' => 'danger')); //danger or success
             }
             redirect('claims/upload/' . $id); // back to the index
         }
@@ -322,12 +353,12 @@ class Claims extends CI_Controller
         //Cheching data is not empty
         $attachment = $this->AttachmentModel->read($id);
         if (!$attachment) {
-            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat tidak sah atau tidak wujud.', 'class' => 'danger')); //danger or success
             redirect('claims/index'); // back to the index
         }
         if ($this->AttachmentModel->delete($id)) {
             //set flash message
-            $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
+            $this->session->set_flashdata('item', array('message' => 'Maklumat berjaya dihapuskan.', 'class' => 'success')); //danger or success
             redirect('claims/upload/' . $attachment['claim_id']); // back to the index
         }
     }
