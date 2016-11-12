@@ -3,7 +3,7 @@
         <div class="card">
             <div class="header">
                 <h4 class="title">Jenis Tuntutan</h4>
-                <p class="category">Senarai tuntutan yang disediakan untuk Tuntutan Tabung Kebajikan</p>
+                <p class="category">Senarai tuntutan yang disediakan untuk Tabung Kebajikan</p>
                 <div class="pull-right box-tools">
                     <a href="<?= base_url("funds/add/"); ?>"
                        class="btn btn-primary btn-sm btn-flat btn-fill"><i class="fa fa-plus"></i>&nbsp;Daftar Tuntutan</a>

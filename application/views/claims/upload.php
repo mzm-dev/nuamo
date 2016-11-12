@@ -16,7 +16,7 @@
         color: #555;
         background-color: #fff;
         background-image: none;
-        border: 1px solid #9a9a9a;
+        border: 1px solid rgba(0, 0, 0, .075);
         border-radius: 1px;
         -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
@@ -27,7 +27,7 @@
 
     .tuntutan > li > span {
         position: absolute;
-        right: 32%
+        right: 10%
     }
 
 </style>
@@ -74,7 +74,6 @@
                     </div>
                 </div>
             </div>
-            <hr/>
         </div>
         <div class="content">
             <ul class="tuntutan" style="list-style: none;">
@@ -107,6 +106,7 @@
                 </label>
                 <input type="text" class="form-control"  readonly>
             </div>
+            <?php echo form_error('document', '<div class="error">', '</div>'); ?>
             <span class="help-block">
                 Dokumen yang dibenarkan hanya *.jpg, *.jpeg, *.png, *.gif, *.pdf, *.zip, *.rar
             </span>
@@ -122,7 +122,7 @@
                         <li style='margin: 10px'>
                             <a href="<?= base_url("uploads/" . $attach['file_name']) ?>"><?= $attach['title'] ?></a>
                             <?= "[" . $attach['file_size'] . " MB]" ?>
-                            <span><a href="<?= base_url("users/delete/" . $attach['id']); ?>"
+                            <span><a href="<?= base_url("claims/del_file/" . $attach['id']); ?>"
                                      onclick="return confirm('Are you sure you want to delete this item? <?= $attach['title'] ?>');"
                                      class="btn btn-danger btn-xs btn-fill"><i class="fa fa-remove"></i></a></span>
 

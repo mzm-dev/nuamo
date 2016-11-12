@@ -122,10 +122,11 @@ class MemberModel extends CI_Model
      */
     public function read($id)
     {
-        $this->db->select($this->Table . '.*, params.name "status_name"');
+        $this->db->select($this->Table . '.*, params.name "status_name",states.name "states"');
         $this->db->from($this->Table);
         $this->db->where("$this->Table.id", $id);
         $this->db->join('params', "params.code = $this->Table.status");
+        $this->db->join('states', "states.code = $this->Table.state_id");
         $Q = $this->db->get();
         if ($Q->num_rows() > 0) {
             return $Q->row_array();

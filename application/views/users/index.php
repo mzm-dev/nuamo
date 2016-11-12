@@ -5,7 +5,7 @@
                 <h4 class="title">Senarai Pengguna</h4>
                 <div class="pull-right box-tools">
                     <a href="<?= base_url("users/add/"); ?>"
-                       class="btn btn-primary btn-sm btn-flat btn-fill"><i class="fa fa-plus"></i>&nbsp;Daftar Tuntutan</a>
+                       class="btn btn-primary btn-sm btn-flat btn-fill"><i class="fa fa-plus"></i>&nbsp;Daftar Pengguna</a>
                 </div>
             </div>
             <div class="content table-responsive table-full-width">

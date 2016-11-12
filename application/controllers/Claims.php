@@ -53,7 +53,7 @@ class Claims extends CI_Controller
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         //Get Status Name with prefix code '100'%
-        $data['status_name'] = $this->ParamModel->read_pre('100', false);
+        //$data['status_name'] = $this->ParamModel->read_pre('100', false);
 
         $data['main'] = '/claims/index';
         $this->load->view('layouts/default', $data);
@@ -79,8 +79,6 @@ class Claims extends CI_Controller
         //various pagination configuration
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
-        //Get Status Name with prefix code '100'%
-        $data['status_name'] = $this->ParamModel->read_pre('100', false);
 
         $data['main'] = '/claims/newer';
         $this->load->view('layouts/default', $data);
@@ -117,6 +115,8 @@ class Claims extends CI_Controller
                 'bank_account' => $this->input->post('bank_account'),
                 'num_account' => $this->input->post('num_account'),
                 'sum' => $this->input->post('sum'),
+                'catatan' => $this->input->post('catatan'),
+                'status' => $this->input->post('status'),
 
             );
             $insert_id = $this->ClaimModel->create($data); //load model
@@ -142,8 +142,9 @@ class Claims extends CI_Controller
     /**
      * @param null $id
      */
-    public function edit($id = null)
+    public function edit($view, $id = null)
     {
+
         if (!empty($id) && !$this->ClaimModel->exists($id)) {
             $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
             redirect('claims/index'); // back to the index
@@ -151,35 +152,90 @@ class Claims extends CI_Controller
 
         //check if $id is missing, use post(id) as replace segment id
         $id = ($this->input->post() ? $this->input->post('id') : $id);
-        //fetch claim record for the given employee no
         $data['claim'] = $this->ClaimModel->read($id);
+        $data['funds'] = $this->ItemModel->listing_join($id);
+        $data['bank'] = $this->ParamModel->read_pre('30', false);
+        $data['status'] = $this->ParamModel->read_pre('100');
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'name', 'label' => 'Claimeter Name', 'rules' => 'required'),
-            array('field' => 'code', 'label' => 'Kod', 'rules' => 'required'),
-            array('field' => 'status', 'label' => 'status', 'rules' => 'required')
+            array('field' => 'nric', 'label' => 'No Kad Pengenalan', 'rules' => 'required'),
+            array('field' => 'name', 'label' => 'Nama Penuh', 'rules' => 'required'),
+            array('field' => 'branch', 'label' => 'Cawangan', 'rules' => 'required'),
+            array('field' => 'num_account', 'label' => 'No Akaun', 'rules' => 'required')
         ));
-
-        //if validation not run, just show form
         if ($this->form_validation->run() == FALSE) {
-            $data['main'] = '/claims/edit';
+            $data['main'] = 'claims/edit';
             $this->load->view('layouts/default', $data);
         } else {
+            $post = $this->input->post();
+            $count = $this->input->post('count') - 1;
+
+
             $data = array(
                 'id' => $this->input->post('id'),
-                'name' => $this->input->post('name'),
-                'code' => $this->input->post('code'),
-                'status' => $this->input->post('status')
+                'nric' => $this->input->post('nric'),
+                'branch' => $this->input->post('branch'),
+                'bank_account' => $this->input->post('bank_account'),
+                'num_account' => $this->input->post('num_account'),
+                'sum' => $this->input->post('sum'),
+                'catatan' => $this->input->post('catatan'),
+                'status' => $this->input->post('status'),
+
             );
+
             $this->ClaimModel->modified($data); //load model
 
-            //set flash message
-            $this->session->set_flashdata('item', array('message' => 'The claimeter has been saved', 'class' => 'success')); //danger or success
-            redirect('claims/index'); // back to the index
-        }
+            $data = array();
+            for ($x = 0; $x <= $count; $x++) {
+                if ($post['qty-' . $x] != 0) {
+                    $data[$x]['claim_id'] = $id;
+                    $data[$x]['fund_id'] = $post['fund-' . $x];
+                    $data[$x]['qty'] = $post['qty-' . $x];
+                    $data[$x]['amount'] = $post['amount-' . $x];
+                }
+            }
 
+            $this->ItemModel->clear($id);
+            $this->ItemModel->create($data);
+            $redirect = $this->input->post('redirect');
+            //set flash message
+            $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
+            redirect("claims/$redirect"); // back to the index
+        }
     }
+
+    /**
+     * @param null $id
+     */
+    public function view($view, $id = null)
+    {
+        if (!empty($id) && !$this->ClaimModel->exists($id)) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('members/index'); // back to the index
+        }
+        $data['funds'] = $this->ItemModel->listing_join($id);
+        $data['claim'] = $this->ClaimModel->read($id);
+        $data['attaches'] = $this->AttachmentModel->listing($id);
+        $data['main'] = '/claims/view';
+        $this->load->view('layouts/default', $data);
+    }
+    /**
+     * @param null $id
+     */
+    public function cetak($id = null)
+    {
+        if (!empty($id) && !$this->ClaimModel->exists($id)) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('members/index'); // back to the index
+        }
+        $data['funds'] = $this->ItemModel->listing_join($id);
+        $data['claim'] = $this->ClaimModel->read($id);
+        $data['attaches'] = $this->AttachmentModel->listing($id);
+        $data['main'] = '/claims/cetak';
+        $this->load->view('layouts/default_print', $data);
+    }
+
 
     /**
      * delete method
@@ -212,7 +268,7 @@ class Claims extends CI_Controller
 
         //check if $id is missing, use post(id) as replace segment id
         $id = ($this->input->post() ? $this->input->post('id') : $id);
-        
+
         $data['attaches'] = $this->AttachmentModel->listing($id);
         $data['items'] = $this->ItemModel->listing($id);
         $data['claim'] = $this->ClaimModel->read($id);
@@ -220,7 +276,8 @@ class Claims extends CI_Controller
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'title', 'label' => 'Tajuk Fail', 'rules' => 'required')
+            array('field' => 'title', 'label' => 'Tajuk Fail', 'rules' => 'required'),
+            array('field' => 'document', 'label' => 'Dokumen', 'rules' => 'required')
         ));
 
         //if validation not run, just show form
@@ -228,8 +285,7 @@ class Claims extends CI_Controller
             $data['main'] = '/claims/upload';
             $this->load->view('layouts/default', $data);
         } else {
-            $fileName = $fileSize = '';
-            //var_dump($_FILES);
+
             $fileName = microtime(true) . '.' . $id; //1478046270.93.1.jpg
             $config['upload_path'] = './uploads/';
             $config['allowed_types'] = 'gif|jpeg|jpg|png|zip|rar';
@@ -259,6 +315,24 @@ class Claims extends CI_Controller
     }
 
     /**
+     * @param $id
+     */
+    public function del_file($id)
+    {
+        //Cheching data is not empty
+        $attachment = $this->AttachmentModel->read($id);
+        if (!$attachment) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('claims/index'); // back to the index
+        }
+        if ($this->AttachmentModel->delete($id)) {
+            //set flash message
+            $this->session->set_flashdata('item', array('message' => 'User deleted', 'class' => 'success')); //danger or success
+            redirect('claims/upload/' . $attachment['claim_id']); // back to the index
+        }
+    }
+
+    /**
      * @param $code
      * @return mixed
      */
@@ -279,4 +353,33 @@ class Claims extends CI_Controller
         }
     }
 
+
+    /**
+     *
+     */
+    public function ajax_member()
+    {
+        if ($this->input->is_ajax_request()) {
+            $key = $this->input->post('key');
+            $val = $this->input->post('val');
+            $member = $this->MemberModel->read_by($key, $val); //load model
+            if (!empty($member)) {
+                $already = $this->ClaimModel->already($member['nric']); //load model
+                if ($already) {
+                    $data['data'] = $member;
+                    $data['result'] = true;
+                } else {
+                    $data['data'] = 'Permohonan terdahulu masih wujud dan belum di luluskan.\nSila semak status permohonan dengan menggunakan No Kad Pengenalan';
+                    $data['result'] = false;
+                }
+            } else {
+                $data['data'] = 'Maklumat tidak wujud.';
+                $data['result'] = false;
+            }
+            echo json_encode($data);
+        } else {
+            exit('No direct script access allowed');
+
+        }
+    }
 }

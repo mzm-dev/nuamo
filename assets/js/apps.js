@@ -1,7 +1,12 @@
 $(document).ready(function () {
 
-    //No Kad Pengenalan
+    $("[data-collapse-group]").on('show.bs.collapse', function () {
+        var $this = $(this);
+        var thisCollapseAttr = $this.attr('data-collapse-group');
+        $("[data-collapse-group='" + thisCollapseAttr + "']").not($this).collapse('hide');
+    });
 
+    //No Kad Pengenalan
     var real_tahun = real_umur = tmp_hari = tmp_bulan = '';
     $("#MemberNric").on('keyup', function (e) {
         var noic = $(this).val();
@@ -54,11 +59,8 @@ $(document).ready(function () {
 
 
     //Datepicker
-    $('#MemberDate').datetimepicker({
-        format: 'DD-MM-YYYY',
-        maxDate: new Date()
-    });
-    $('#MemberDop').datetimepicker({
+    $('#MemberDate, #MemberDop, #MemberReceived, #MemberApproved ,#MemberNotified, #MemberDReceipt').datetimepicker({
+        useCurrent: false,
         format: 'DD-MM-YYYY',
         maxDate: new Date()
     });
@@ -70,14 +72,16 @@ $(document).ready(function () {
         if ($(this).val().length == 12) {
             $('#ClaimNricError').hide();
             var value = $(this).val();
-            $.post(site_url + "members/ajax_member", {key: "nric", val: value})
+            $.post(site_url + "claims/ajax_member", {key: "nric", val: value})
                 .done(function (res) {
                     var member = JSON.parse(res);
                     if (member.result) {
                         $("#ClaimName").val(member.data.name);
                         $("#nirc-success").show();
                     } else {
-                        alert('Data Not Found');
+                        alert(member.data.replace(/\\n/g, "\n"));
+                        window.location = site_url + "claims/add";
+                        //window.location="http://www.tutorialspoint.com";
                     }
                 });
         } else {
@@ -93,6 +97,7 @@ $(document).ready(function () {
         calculateSum();
     });
     function calculateSum() {
+        var inputsum = $("input.sum");
         var sum = 0;
         //iterate through each textboxes and add the values
         $(".qty").each(function () {
@@ -108,7 +113,8 @@ $(document).ready(function () {
             }
         });
 
-        $("input.sum").val(sum.toFixed(2));
+        inputsum.val(sum.toFixed(2));
+
     }
 
 });

@@ -28,6 +28,25 @@ class ClaimModel extends CI_Model
     }
 
     /**
+     * exists data
+     * @claim $id
+     * @return bool
+     * @desc This function use for checking whether data exists or not
+     */
+    public function already($data)
+    {
+        $this->db->where('nric', $data);
+        $this->db->where('status !=', 1004);
+        //$this->db->where_not_in('status', 1004);
+        $Q = $this->db->get($this->Table);
+        if ($Q->num_rows() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * @claim $limit
      * @claim $offset
      * @return mixed
@@ -79,6 +98,7 @@ class ClaimModel extends CI_Model
             members.id "member_id", 
             members.name "member_name", 
             members.email "member_email",
+            members.nric "member_nric",
             members.phone "member_phone",
             members.telephone "member_telephone"
         ');

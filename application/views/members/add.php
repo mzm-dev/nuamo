@@ -7,16 +7,6 @@
             <?php echo form_open('members/add', array('novalidate' => true)); // ?>
 
             <div class="row">
-                <div class="col-md-2 col-xs-6">
-                    <div class="form-group">
-                        <label for="MemberDate" class="control-label">Tarikh Mohon :</label>
-                        <input type="text" class="form-control border-input" name="date" id="MemberDate"
-                               value="<?php echo set_value('date'); ?>">
-                        <?php echo form_error('date', '<div class="error">', '</div>'); ?>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="MemberName" class="control-label">Nama Penuh :</label>
@@ -101,12 +91,25 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="ParamState" class="control-label">Negeri Bertugas:</label>
+                        <?php
+                        $attr = array('class' => 'form-control border-input', 'id' => 'ParamState');
+                        echo form_dropdown('state_id', $states, set_value('state_id'), $attr);
+                        ?>
+                        <?php echo form_error('state_id', '<div class="error">', '</div>'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="MemberAddOffice" class="control-label">Alamat Tempat Bertugas :</label>
                         <textarea rows="3" class="form-control border-input" name="add_office" id="MemberAddOffice"
                                   placeholder="Alamat Tempat Bertugas"><?php echo set_value('add_office'); ?></textarea>
                         <?php echo form_error('add_office', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="MemberAddress" class="control-label">Alamat Rumah :</label>
@@ -116,31 +119,32 @@
                     </div>
                 </div>
             </div>
+            <hr/>
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label for="ParamStatus" class="control-label">Status Permohonan:</label>
-                                <?php
-                                //$status = array(''=>'--Pilih--');
-                                $attr = array('class' => 'form-control border-input', 'id' => 'ParamStatus');
-                                echo form_dropdown('status', $status, set_value('status'), $attr);
-                                ?>
-                                <?php echo form_error('status', '<div class="error">', '</div>'); ?>
+                                <label for="MemberReceived" class="control-label">Tarikh Borang Permohonan Diterima :</label>
+                                <input type="text" class="form-control border-input" name="date_register" id="MemberReceived"
+                                       placeholder="dd-mm-yyyy" value="<?php echo set_value('date_received'); ?>">
+                                <?php echo form_error('date_received', '<div class="error">', '</div>'); ?>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label for="ParamActive" class="control-label">Status Keahlian:</label>
-                                <?php
-                                $options = array('' => '--Pilih--', '0' => 'Tidak Aktif', '1' => 'Aktif');
-                                $attr = array('class' => 'form-control border-input', 'id' => 'ParamActive');
-                                echo form_dropdown('is_active', $options,set_value('is_active'), $attr);
-                                ?>
-                                <?php echo form_error('is_active', '<div class="error">', '</div>'); ?>
+                                <label for="MemberApproved" class="control-label">Tarikh Permohonan Diluluskan :</label>
+                                <input type="text" class="form-control border-input" name="dop" id="MemberApproved"
+                                       placeholder="dd-mm-yyyy" value="<?php echo set_value('date_approved'); ?>">
+                                <?php echo form_error('date_approved', '<div class="error">', '</div>'); ?>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="MemberNotified" class="control-label">Permohonan Diberitahu Pada :</label>
+                                <input type="text" class="form-control border-input" name="dop" id="MemberNotified"
+                                       placeholder="dd-mm-yyyy" value="<?php echo set_value('date_notified'); ?>">
+                                <?php echo form_error('date_notified', '<div class="error">', '</div>'); ?>
                             </div>
                         </div>
                     </div>
@@ -150,11 +154,57 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="MemberComment" class="control-label">Komen & Catatan :</label>
-                        <textarea rows="5" class="form-control border-input" name="comment" id="MemberComment"
-                                  placeholder="Komen & Catatan"><?php echo set_value('comment'); ?></textarea>
+                        <textarea rows="7" class="form-control border-input"
+                                  name="comment" id="MemberComment"
+                                  placeholder="Komen & Catatan"><?php echo set_value('comment'); ?>
+                        </textarea>
                                 <?php echo form_error('comment', '<div class="error">', '</div>'); ?>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="MemberReceipt" class="control-label">No. Resit :</label>
+                        <input type="text" class="form-control border-input" name="nom_receipt" id="MemberReceipt"
+                               placeholder="123409" value="<?php echo set_value('nom_receipt'); ?>">
+                        <?php echo form_error('nom_receipt', '<div class="error">', '</div>'); ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="MemberDReceipt" class="control-label">Tarikh Dikelurkan  :</label>
+                        <input type="text" class="form-control border-input" name="date_receipt" id="MemberDReceipt"
+                               placeholder="dd-mm-yyyy" value="<?php echo set_value('date_receipt'); ?>">
+                        <?php echo form_error('date_receipt', '<div class="error">', '</div>'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ParamStatus" class="control-label">Status Permohonan:</label>
+                        <?php
+                        //$status = array(''=>'--Pilih--');
+                        $attr = array('class' => 'form-control border-input', 'id' => 'ParamStatus');
+                        echo form_dropdown('status', $status, set_value('status'), $attr);
+                        ?>
+                        <?php echo form_error('status', '<div class="error">', '</div>'); ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ParamActive" class="control-label">Status Keahlian:</label>
+                        <?php
+                        $options = array('' => '--Pilih--', '0' => 'Tidak Aktif', '1' => 'Aktif');
+                        $attr = array('class' => 'form-control border-input', 'id' => 'ParamActive');
+                        echo form_dropdown('is_active', $options, set_value('is_active'), $attr);
+                        ?>
+                        <?php echo form_error('is_active', '<div class="error">', '</div>'); ?>
                     </div>
                 </div>
             </div>

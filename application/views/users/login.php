@@ -5,7 +5,7 @@
                 <div class="header">
                     <h3 class="title">Login</h3>
                 </div>
-                <div class="content">
+                <div class="content login">
                     <?php
                     $message = $this->session->flashdata('item');
                     echo (!empty($message) ? '<div class="alert alert-' . $message['class'] . '" role="alert" id="infoMessage"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button><span>' . $message['message'] . '</span></div>' : '');

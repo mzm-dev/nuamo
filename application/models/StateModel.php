@@ -36,11 +36,11 @@ class StateModel extends CI_Model
      * @state int id
      * @return void
      */
-    public function read_pre($pre, $pilih = true)
+    public function read_pre($pilih = true)
     {
         $data = array();
         // Produces: WHERE `title` LIKE 'match%' ESCAPE '!'
-        $this->db->like('code', $pre, 'after');
+        //$this->db->like('code', $pre, 'after');
         $Q = $this->db->get($this->Table);
         if ($Q->num_rows() > 0) {
             $states = $Q->result_array();

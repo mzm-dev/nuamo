@@ -12,7 +12,7 @@
                     <label class="sr-only" for="inputSearch">Search</label>
                     <input type="text" name="query" class="form-control" id="inputSearch" placeholder="Carian">
                 </div>
-                <button type="submit" class="btn btn-wd btn-warning btn-fill btn-flat btn-magnify">
+                <button type="submit" class="btn btn-sm btn-warning btn-fill btn-flat btn-magnify">
                     <span class="btn-label"><i class="ti-search"></i></span> Carian
                 </button>
                 <?php echo form_close(); ?>

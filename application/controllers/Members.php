@@ -13,6 +13,7 @@ class Members extends CI_Controller
         parent::__construct();
         $this->load->model('ParamModel');
         $this->load->model('MemberModel');
+        $this->load->model('StateModel');
         $this->isRegistered();
     }
 
@@ -126,10 +127,11 @@ class Members extends CI_Controller
     public function add()
     {
         $data['status'] = $this->ParamModel->read_pre('100');
+        $data['states'] = $this->StateModel->read_pre();
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'date', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
+            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
             array('field' => 'name', 'label' => 'Nama', 'rules' => 'required'),
             array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email'),
             array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required'),
@@ -147,7 +149,7 @@ class Members extends CI_Controller
             $this->load->view('layouts/default', $data);
         } else {
             $data = array(
-                'date_register' => date("Y-m-d", strtotime($this->input->post('date'))),
+                'date_register' => date("Y-m-d", strtotime($this->input->post('date_register'))),
                 'name' => $this->input->post('name'),
                 'email' => $this->input->post('email'),
                 'phone' => $this->input->post('phone'),
@@ -163,6 +165,8 @@ class Members extends CI_Controller
                 'is_active' => $this->input->post('is_active'),
             );
             $this->MemberModel->create($data); //load model
+
+
             //set flash message
             $this->session->set_flashdata('item', array('message' => 'Registration Successful', 'class' => 'success')); //danger or success
             redirect('members/index'); // back to the index
@@ -181,13 +185,14 @@ class Members extends CI_Controller
 
         //check if $id is missing, use post(id) as replace segment id
         $id = ($this->input->post() ? $this->input->post('id') : $id);
-        //fetch member record for the given employee no
+
         $data['member'] = $this->MemberModel->read($id);
         $data['status'] = $this->ParamModel->read_pre('100');
+        $data['states'] = $this->StateModel->read_pre();
 
         //set form validation
         $this->form_validation->set_rules(array(
-            array('field' => 'date', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
+            array('field' => 'date_register', 'label' => 'Tarikh Permohonan', 'rules' => 'required'),
             array('field' => 'name', 'label' => 'Nama', 'rules' => 'required'),
             array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email'),
             array('field' => 'phone', 'label' => 'No Telefon', 'rules' => 'required'),
@@ -209,7 +214,7 @@ class Members extends CI_Controller
         } else {
             $data = array(
                 'id' => $this->input->post('id'),
-                'date_register' => date("Y-m-d", strtotime($this->input->post('date'))),
+                'date_register' => date("Y-m-d", strtotime($this->input->post('date_register'))),
                 'name' => $this->input->post('name'),
                 'email' => $this->input->post('email'),
                 'phone' => $this->input->post('phone'),
@@ -254,6 +259,22 @@ class Members extends CI_Controller
     }
 
     /**
+     * @param null $id
+     */
+    public function cetak($id = null)
+    {
+        if (!empty($id) && !$this->MemberModel->exists($id)) {
+            $this->session->set_flashdata('item', array('message' => 'Invalid or Data not found!', 'class' => 'danger')); //danger or success
+            redirect('members/index'); // back to the index
+        }
+
+        $data['status'] = array('' => '--Tiada Maklumat--', '0' => 'Tidak Aktif', '1' => 'Aktif');
+        $data['member'] = $this->MemberModel->read($id);
+        $data['main'] = '/members/cetak';
+        $this->load->view('layouts/default_print', $data);
+    }
+
+    /**
      * delete method
      * @member string user_id
      */
@@ -270,27 +291,6 @@ class Members extends CI_Controller
             redirect('members/index'); // back to the index
         }
 
-    }
-
-    /**
-     *
-     */
-    public function ajax_member()
-    {
-        if ($this->input->is_ajax_request()) {
-            $key = $this->input->post('key');
-            $val = $this->input->post('val');
-            $data['data'] = $this->MemberModel->read_by($key, $val); //load model
-            if (!empty($data['data'])) {
-                $data['result'] = true;
-            } else {
-                $data['result'] = false;
-            }
-            echo json_encode($data);
-        } else {
-            exit('No direct script access allowed');
-
-        }
     }
 
 }

@@ -9,7 +9,7 @@
 <div class="col-lg-12 col-md-12">
     <div class="card">
         <div class="header">
-            <h4 class="title">Daftar Tuntutan</h4>
+            <h4 class="title">Daftar Permohonan</h4>
         </div>
         <div class="content">
             <?php echo form_open('claims/add', array('novalidate' => true)); // ?>
@@ -103,6 +103,28 @@
                         </li>
                     </ul>
 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="MemberComment" class="control-label">Catatan :</label>
+                        <textarea rows="7" class="form-control border-input"
+                                  name="catatan" id="MemberComment"
+                                  placeholder="Catatan"></textarea>
+                        <?= form_error('catatan', '<div class="error">', '</div>'); ?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ParamStatus" class="control-label">Status Permohonan:</label>
+                        <?php
+                        //$status = array(''=>'--Pilih--');
+                        $attr = array('class' => 'form-control border-input', 'id' => 'ParamStatus');
+                        echo form_dropdown('status', $status, null, $attr);
+                        ?>
+                        <?= form_error('status', '<div class="error">', '</div>'); ?>
+                    </div>
                 </div>
             </div>
             <div class="text-left">

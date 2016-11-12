@@ -10,7 +10,7 @@ $action = $this->uri->segment(2);
     <div class="sidebar-wrapper">
         <div class="logo">
             <a href="<?= base_url() ?>" class="simple-text">
-                <img src="<?= base_url() . 'assets/img/apple-icon.png'; ?>" width="60" alt="Logo"/> NUAMO
+                <img class="img-circle" src="<?= base_url() . 'assets/img/logo.jpg'; ?>" width="60" alt="Logo"/> NUAMO
             </a>
         </div>
 
@@ -59,7 +59,7 @@ $action = $this->uri->segment(2);
                         <li><a href="<?= base_url("claims/add"); ?>">Daftar Permohonan</a></li>
                         <li><a href="<?= base_url("claims/newer"); ?>">Permohonan Baru</a></li>
                         <li><a href="<?= base_url("claims/"); ?>">Rekod Permohonan</a></li>
-                        <li><a href="<?= base_url("funds/"); ?>">Jenis Tututan</a></li>
+                        <li><a href="<?= base_url("funds/"); ?>">Jenis Tuntutan</a></li>
                     </ul>
                 </div>
             </li>
