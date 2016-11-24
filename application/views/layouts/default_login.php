@@ -39,6 +39,10 @@
     <div class="full-page login-page">
         <div class="content">
             <div class="container">
+                <?php
+                $message = $this->session->flashdata('item');
+                echo (!empty($message) ? '<div class="alert alert-' . $message['class'] . '" role="alert" id="infoMessage"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button><span>' . $message['message'] . '</span></div>' : '');
+                ?>
                 <?php //echo $authUser['username'] ?>
                 <?php $this->load->view($main); ?>
             </div>

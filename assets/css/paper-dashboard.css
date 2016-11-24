@@ -6208,7 +6208,7 @@ a.dropdown-toggle[aria-expanded="true"] .caret {
     outline: 0 !important;
 }
 
-.card .error {
+.card .error, .guest .error, .guest.semak .error {
     color: #eb5e28 !important
 }
 

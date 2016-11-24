@@ -16,7 +16,7 @@
                 ?>
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <div style="padding: 20px 0">
+                        <div style="padding: 20px 0; border-right: 1px solid rgba(0,0,0,0.1)">
                             <img src="<?= base_url() . 'assets/img/logo.jpg'; ?>" alt="Logo" class="logo img-circle"/>
                             <p>
                                 <small>KESATUAN KEBANGSAAAN PENOLONG PEGAWAI PERUBATAN SEMENANJUNG MALAYSIA<br/>(NO
@@ -24,6 +24,7 @@
                                     248)
                                 </small>
                             </p>
+                            <a class="btn btn-fill btn-flat btn-success" href="<?= base_url("guests/"); ?>">Contoh Capaian Umum</a>
                         </div>
                     </div>
                     <div class="col-md-6">

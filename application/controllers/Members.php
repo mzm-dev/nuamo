@@ -200,6 +200,7 @@ class Members extends CI_Controller
                 'year' => $this->input->post('year'),
                 'dob' => date("Y-m-d", strtotime($this->input->post('dob'))),
                 'dop' => date("Y-m-d", strtotime($this->input->post('dop'))),
+                'state_id' => $this->input->post('state_id'),
                 'add_office' => $this->input->post('add_office'),
                 'address' => $this->input->post('address'),
                 'status' => $this->input->post('status'),

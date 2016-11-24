@@ -31,15 +31,7 @@
         right: 45%;
     }
 </style>
-
-<div class="content-view">
-    <div class="row no-print">
-        <div class="col-md-12">
-            <a onclick='linkopen();' href='#'
-               class="btn btn-primary btn-flat pull-right">
-                <i class="fa fa-print"></i> Print</a>
-        </div>
-    </div>
+<div class="col-lg-12 col-md-12">
     <div class="row">
         <div class="header col-md-12">
             <!--            <img src="-->
@@ -52,28 +44,7 @@
             <p style="margin-bottom: 32px" class="text-center">Bilangan pendaftaran :248</p>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="pull-right">
-                <table style="line-height: 2">
-                    <tbody>
-                    <tr>
-                        <td width="80px">Nama</td>
-                        <td width="5px">:</td>
-                        <td width="250px"
-                            style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['name'] ?></td>
-                    </tr>
-                    <tr>
-                        <td width="80px">Tarikh</td>
-                        <td width="5px">:</td>
-                        <td width="250px"
-                            style="border-bottom: 1px dotted #333; padding:0 10px"><?= ($member['date_register'] ? date("d-m-Y", strtotime($member['date_register'])) : '-') ?></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-md-12">
             <p><strong>SETIAUSAHA AGUNG</strong></p>
@@ -82,7 +53,7 @@
             <p><u><strong>Permohonan Menjadi Ahli Kesatuan kebangsaan Penolong Pegawai Perubatan Semenanjung
                         (NUAMO)</strong></u></p>
             <br/>
-            <p>Adalah Saya Dengan Segala Hormatnya Adalah Seperti Berikut :</p>
+            <p>Maklumat Pemohon Adalah Seperti Berikut :</p>
             <style>
                 .butiran {
                     counter-reset: foo;
@@ -103,19 +74,19 @@
                     <td>2.1</td>
                     <td style="padding:0 10px">Nama Penuh</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['name'] ?></td>
+                    <td width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['name'] ?></td>
                 </tr>
                 <tr>
                     <td>2.2</td>
                     <td style="padding:0 10px">Umur</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['age'] ?></td>
+                    <td width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['age'] ?></td>
                 </tr>
                 <tr>
                     <td>2.3</td>
                     <td style="padding:0 10px">No Kad Pengenalan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nric'] ?></td>
+                    <td width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nric'] ?></td>
                 </tr>
                 <tr>
                     <td>2.4</td>
@@ -139,17 +110,17 @@
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['states'] ?></td>
                 </tr>
                 <tr>
-                    <td>2.7</td>
-                    <td style="padding:0 10px">Alamat Tempat Bertugas</td>
-                    <td width="5px">:</td>
+                    <td valign="top">2.7</td>
+                    <td valign="top" style="padding:0 10px">Alamat Tempat Bertugas</td>
+                    <td valign="top" width="5px">:</td>
                     <td width="250px"
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['add_office'] ?></td>
                 </tr>
 
                 <tr>
-                    <td>2.8</td>
-                    <td style="padding:0 10px">Alamat Rumah</td>
-                    <td width="5px">:</td>
+                    <td valign="top">2.8</td>
+                    <td valign="top" style="padding:0 10px">Alamat Rumah</td>
+                    <td valign="top" width="5px">:</td>
                     <td width="250px"
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['address'] ?></td>
                 </tr>
@@ -202,16 +173,16 @@
                 <tr>
                     <td width="250px">No.Resit Dan Tarikh Dikelurkan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nom_receipt'] . "(".$member['date_receipt'].")"; ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nom_receipt'] . "(".$member['date_receipt'].")" ?></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <hr/>
+
     <div class="row">
         <div class="col-md-12">
-            <p class="text-center"><strong>STATUS SISTEM</strong></p>
+            
             <table style="line-height: 2">
                 <tbody>
                 <tr>
@@ -233,9 +204,5 @@
             </table>
         </div>
     </div>
+
 </div>
-<script>
-    function linkopen() {
-        window.open("<?= base_url("members/cetak/" . $member['id']); ?>", "_blank", "location=no ,toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=795, height=500px");
-    }
-</script>

@@ -113,6 +113,7 @@ class MemberModel extends CI_Model
         );
         $this->db->set($array);
         $this->db->insert($this->Table, $data);
+        return $this->db->insert_id();
     }
 
     /**
@@ -172,4 +173,27 @@ class MemberModel extends CI_Model
         $this->db->delete($this->Table);
         return TRUE;
     }
+
+
+    ######GUEST#####
+    /**
+     * read exist data
+     * @param $key
+     * @return mixed
+     */
+    public function status($key)
+    {
+        $this->db->select($this->Table . '.*, params.name "status_name",states.name "states"');
+        $this->db->from($this->Table);
+        $this->db->where("$this->Table.nric", $key);
+        $this->db->join('params', "params.code = $this->Table.status");
+        $this->db->join('states', "states.code = $this->Table.state_id");
+        $Q = $this->db->get();
+        if ($Q->num_rows() > 0) {
+            return $Q->row_array();
+        }else{
+            return false;
+        }
+    }
+
 }

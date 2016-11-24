@@ -103,19 +103,19 @@
                     <td>2.1</td>
                     <td style="padding:0 10px">Nama Penuh</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['name'] ?></td>
+                    <td  width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['name'] ?></td>
                 </tr>
                 <tr>
                     <td>2.2</td>
                     <td style="padding:0 10px">Umur</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['age'] ?></td>
+                    <td  width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['age'] ?></td>
                 </tr>
                 <tr>
                     <td>2.3</td>
                     <td style="padding:0 10px">No Kad Pengenalan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nric'] ?></td>
+                    <td  width="400px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nric'] ?></td>
                 </tr>
                 <tr>
                     <td>2.4</td>
@@ -139,17 +139,17 @@
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['states'] ?></td>
                 </tr>
                 <tr>
-                    <td>2.7</td>
-                    <td style="padding:0 10px">Alamat Tempat Bertugas</td>
-                    <td width="5px">:</td>
+                    <td valign="top">2.7</td>
+                    <td valign="top" style="padding:0 10px">Alamat Tempat Bertugas</td>
+                    <td valign="top" width="5px">:</td>
                     <td width="250px"
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['add_office'] ?></td>
                 </tr>
 
                 <tr>
-                    <td>2.8</td>
-                    <td style="padding:0 10px">Alamat Rumah</td>
-                    <td width="5px">:</td>
+                    <td valign="top">2.8</td>
+                    <td valign="top" style="padding:0 10px">Alamat Rumah</td>
+                    <td valign="top" width="5px">:</td>
                     <td width="250px"
                         style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['address'] ?></td>
                 </tr>
@@ -187,22 +187,22 @@
                 <tr>
                     <td width="250px">Tarikh Borang Permohonan Diterima</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['date_received'] ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 <tr>
                     <td width="250px">Tarikh Permohonan Diluluskan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['date_approved'] ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 <tr>
                     <td width="250px">Permohonan Diberitahu Pada</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['date_notified'] ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 <tr>
                     <td width="250px">No.Resit Dan Tarikh Dikelurkan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= $member['nom_receipt'] . "(".$member['date_receipt'].")"; ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 </tbody>
             </table>
@@ -217,17 +217,17 @@
                 <tr>
                     <td width="250px">Status Permohonan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?=$member['status_name'] ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 <tr>
                     <td width="250px">Status Keahlian</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?= ($member['is_active'] ? 'Aktif':'Tidak Aktif'); ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 <tr>
                     <td width="250px">Komen & Catatan</td>
                     <td width="5px">:</td>
-                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"><?=$member['comment'] ?></td>
+                    <td width="250px" style="border-bottom: 1px dotted #333; padding:0 10px"></td>
                 </tr>
                 </tbody>
             </table>
@@ -236,6 +236,6 @@
 </div>
 <script>
     function linkopen() {
-        window.open("<?= base_url("members/cetak/" . $member['id']); ?>", "_blank", "location=no ,toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=795, height=500px");
+        window.open("<?= base_url("guests/ahli_cetak/" . $member['id']); ?>", "_blank", "location=no ,toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=795, height=500px");
     }
 </script>
